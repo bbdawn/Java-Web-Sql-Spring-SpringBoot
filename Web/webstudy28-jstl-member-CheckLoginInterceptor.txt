@@ -1,0 +1,16 @@
+    **webstudy28-jstl-member-CheckLoginInterceptor**
+    
+    refactoring : 입출력 동일 , 프로그램 내부구조 개선을 통해 유지보수성 , 생산성 , 가독성 향상 
+    
+    인증체크 : 로그인한 사용자만 서비스 받을 수 있는 개별 컨트롤러에서 각각 세션 및 세션에 저장된 인증정보를 확인
+    			비로그인 상태이면 로그인 폼이 있는 view로 이동 ( ex - index.jsp ) 
+    			서비스 즉 컨트롤러 수가 확대될수록 중복 작업 증가 
+    			
+    			
+     개선방안 : FrontControllerServlet 차원에서 인증여부를 확인하면 
+     			개별 컨트롤러에서 각각 인증체크를 하는 부담을 덜 수 있다 
+     			-> 서비스 수가 많을 수록 효과적 
+     			
+     			FrontControllerServlet 에서 별도로 인증체크기능을 전담하는 CheckLoginInterceptor 를 이용해 
+     			반환값이 false 인 경우에는 개별 컨트롤러를 실행시키지 않고 
+     			로그인 폼이 있는 view로 redirect 를 시키도록 한다   			 

@@ -1,0 +1,13 @@
+ **webstudy29-mvc-path-test**
+    
+   Web MVC 구조 상에서 경로 연습 
+   -form action 경로 처리 
+   -Controller -> View 로 제어 이동시  forward 와 redirect 경로 처리
+
+View에서 경로 처리시 사용하는 EL :  ${pageContext.request.contextPath}
+
+ <%-- 아래의 el 을 실행하면 현재 웹어플리케이션 경로 (컨텍스트경로)가 출력 --%>
+${pageContext.request.contextPath}
+<%-- 아래처럼 el을 이용해 프로젝트명을 기준으로 경로 설정을 하면 디렉토리 구조가 변경되어도 상관없다 --%>
+<img alt="아이유" src="${pageContext.request.contextPath}/images/iu.jpg">
+

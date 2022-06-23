@@ -1,0 +1,10 @@
+  **webstudy26-JSTL** 
+        
+   JSTL : Jsp Standard Tag Library 
+   			View(jsp) 에서 자주 사용하는 기능 ( 조건문 , 반복문, 자료구조의 데이터 표현 ) 을 미리 구현해 놓은 태그 라이브러리 
+   			EL 과 함께 사용해서 데이터를 표현 
+   			
+   환경설정 :  WEB-INF\lib\jstl-1.2.jar  파일을 위치시킨다     
+                다운로드 경로 : https://mvnrepository.com/artifact/javax.servlet/jstl/1.2
+               
+       

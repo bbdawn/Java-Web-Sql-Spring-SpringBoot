@@ -118,7 +118,62 @@ Http Response status code(응답상태코드)
 
 	구현 순서 : sql-dao-servlet-view
 
+4. 회원정보수정
 
+
+	index.jsp   --- update-form.jsp --------------- UpdateMemberServlet ------- MemberDAO	---------------- Database 
+					  아이디를 제외한															   updateMember(MemberVO) 
+					  패스워드												|
+					  													|  db 및 session 회원정보수정
+					  이름											    |  redirect  
+					  주소를 제공( 세션의 회원객체를 이용 )			update-result.jsp ( 수정된 회원정보 제공 : session의 회원정보를 이용 ) 
+					  
+					  id text 요소 : readonly 속성 -> 읽기전용 
+					  나머지는 수정가능 
+					  
+					  post 방식 요청 
+
+4.1 회원정보수정링크 인증체크 코드 개선 
+     문제점 : index.jsp에서 회원정보수정폼 즉 update-form.jsp 로 이동시 만약 index.jsp에서 세션타임아웃이 되어있는 상태로 클릭하게 되면 
+     		  세션이 해제 되어 있으므로 NullPointerException 이 발생 -> 이슈관리대장에 등록, 개선점을 정리 -> 이슈관리를 명세화 
+     		    
+     개선점 : index.jsp 의 회원수정폼 링크 -----> UpdateFormServlet 
+     														|
+     														| session 및 인증정보를 체크 
+     														| 
+     														| redirect 
+     														update-form.jsp (로그인 상태이면)
+     														or
+     														index.jsp (비로그인 상태이면) 
+
+4.2 회원정보수정폼 인증체크 코드 개선 
+	 이슈사항 : update-form 화면 상에서 세션 타임아웃 상태에서 수정하기 버튼을 눌렀을 때 세션이 해제되어 있으므로 
+	 			NullPointerException 이 발생 
+	 개선방안 : UpdateMemberServlet 에서 세션 및 인증정보를 체크해서 비로그인 상태이면  index.jsp 로 redirect 시킨다 			 
+	 
+
+
+
+
+
+
+5. 회원가입 
+
+index.jsp  ---- register-form.jsp ------ RegisterMemberServlet  --- MemberDAO 			-----------  Database
+				   회원가입폼을 제공 											  register(MemberVO) 	 
+													|
+													| redirect 
+												register-result.jsp 	
+
+
+6. 아이디 중복확인 
+
+별도의 프로젝트 webstudy18 에서 html의 hidden 과 javascript popup 을 단위 테스트 
+
+index.jsp -- register-form.jsp -- 중복확인 버튼 클릭 -- CheckIdServlet --- MemberDAO
+																							checkId(id) : boolean ( 존재하면 true , 존재하지 않으면 false )
+																													  사용불가			사용가능 
+		
 
 
 4. 회원정보수정
@@ -188,24 +243,6 @@ Http Response status code(응답상태코드)
 															true : 사용불가 -> check-id-fail.jsp(팝업) -> 본창의 id text 지우고 포커스를 준다
 															false : 사용가능 -> check-id-ok.jsp(팝업) -> 본창의 hidden checkFlag에 인증한 아이디를 할당한다				
 																					
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -1,0 +1,9 @@
+   **webstudy27-jstl-member-inst2**     
+        
+   상세 내용 -> src\main\resources\요구사항-분석-설계.txt
+   
+   회원관리 프로그램 : Controller 영역 :FrontController Design Pattern 적용
+   					    Model 영역 : DBCP ( DataSource ) 적용 
+   					    View 영역 : EL과 JSTL 적용      
+        
+ 

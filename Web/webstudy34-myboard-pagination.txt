@@ -1,0 +1,5 @@
+**webstudy34-myboard-pagination**
+
+pagination : 게시판의 페이징 처리 
+
+org.kosta.myproject.model.Pagination class : 페이징 처리를 위한 로직을 정의한 클래스 

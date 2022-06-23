@@ -1,0 +1,14 @@
+**webstudy32-css-bootstrap**
+
+bootstrap : 반응형 웹 사이트를 개발하기 위한 css framework 
+
+반응형 웹 : 다양한 기기( pc , 모바일, 태블릿 등)에 최적화된 화면을 제공하는 것을 말한다 
+			스마트 폰에서는 작은 화면에 최적화되게 화면을 제공하고 
+			큰 화면을 가진 스마트 tv 또는 pc 에서는 그에 최적화되게 변경되어 보여주는 것을 말한다 
+			
+CSS의 @media query ( 미디어 쿼리 ) -> html5, css3 에 의해 지원되는 반응형 웹을 위한 기술 
+										    기기 화면의 종류와 크기에 따라 적절한 디자인을 제공 
+										    미디어쿼리 사용을 위한 선언부 
+										    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+위의 미디어 쿼리를 통한 반응형 웹 기술을 부트스트랩에서 기본적으로 제공 		

@@ -29,20 +29,18 @@ HTTP 특성 : Stateless , 사용자의 상태 정보를 유지하지 않는다
    							 				 화면에 쿠키 값 출력 
    							 <--response--  				 
    
-   
+사용자 상태 정보를 유지하는 방식    
 2. Session(HttpSession) 
    사용자 상태 정보를 서버에 저장 
    저장 용량 및 데이터 타입에 제한이 없다 
    로그인, 로그아웃 시에 세션이 이용된다 
    WAS에 세션 유지 시간이 별도로 설정되어 있다 (apache-tomcat/conf/web.xml 에 30분으로 세션 유효시간이 설정되어 있음)
    개별 웹어플리케이션에서 세션 만료 시간을 설정할 때는 WEB-INF/web.xml 에서 별도의 session timeout 시간을 설정하면 된다 
-   
-   세션유지기간 
+  ## 세션유지기간 
    1) 지정한 유효시간 내에 새로운 요청이 없으면 세션이 만료 
    2) 브라우저 종료시 세션 만료 
    3) 로그아웃을 실행할 때 
-
-   HttpSession 관련 주요 메서드 
+  ## HttpSession 관련 주요 메서드 
    - HttpServletRequest 의 getSession() or getSession(true) : 기존 세션이 있으면 기존 세션을 반환, 없으면 새로 생성 
    - HttpServletRequest 의 getSession(false) : 기존 세션이 있으면 기존 세션을 반환, 없으면 null을 반환 
 
@@ -50,20 +48,14 @@ HTTP 특성 : Stateless , 사용자의 상태 정보를 유지하지 않는다
    - HttpSession 의 getAttribute(name) : 세션에 저장된 특정 정보를 반환받을 때 사용 , Object 타입의 객체가 리턴된다 
    
    - HttpSession 의 invalidate() : 세션을 무효화시킨다. 로그아웃시 사용 
-
-==============================
-로그인 과정에서의 세션 처리 흐름 
-
+  ## 로그인 과정에서의 세션 처리 흐름 
 client browser -- request -->  LoginServlet
 								   if(db에 있는 id와 password가 일치하면) 
 								   HttpSession session=request.getSession(); //세션 생성 
 								   session.setAttribute(name,value); // 회원 인증 정보를 할당
 								   로그인 완료 응답하면 client에 jsessionid name의 cookie가 클라이언트측에 저장된다  	
 				<--response-- 
-				
-=============================
-로그인 후 인증 회원만 서비스 받을 수 있는 프로그램에 접속했을 때 세션 처리 흐름 
-
+  ## 로그인 후 인증 회원만 서비스 받을 수 있는 프로그램에 접속했을 때 세션 처리 흐름 
 client browser -- requst -->  CafeServlet
 								   HttpSession session=request.getSession(false); //기존 세션이 있으면 반환, 없으면 null 반환 	
 								  // 위 코드가 실행되면 클라이언트 브라우저에 저장된 jsessionid 값과 서버 측에 저장되어 있는 session id 값을 비교해서

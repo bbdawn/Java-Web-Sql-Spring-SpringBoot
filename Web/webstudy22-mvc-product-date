@@ -1,0 +1,16 @@
+    **webstudy22-mvc-product-date**
+    
+    Web MVC + Front Controller Design Pattern 상에서 database 의 date 형을 이용한 웹어플리케이션 구현 연습 
+    
+    Model :   org.kosta.myproject.model.ProductVO    				
+                org.kosta.myproject.model.ProductDAO  				
+    
+    Controller : org.kosta.myproject.controller.FrontControllerServlet    				
+                 org.kosta.myproject.controller.HandlerMapping   				
+                 org.kosta.myproject.controller.Controller   				
+        				
+    View : index.jsp 
+    
+    src\test\java  :  TestUnitProductDAO 단위테스트     				
+        				
+   

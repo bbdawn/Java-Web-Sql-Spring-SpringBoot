@@ -1,0 +1,12 @@
+**webstudy36-mvc-ajax**
+
+ - MVC , FrontController Design Pattern 구조하에서 Ajax, JSON 적용 
+ 
+   : AjaxView ( Servlet ) -> Ajax 응답을 위한 서블릿
+   								Ajax 응답은 web page가 아니라 필요한 데이터만 응답하므로 서블릿으로 응답 프로그램을 구현 
+   								
+   								각 컨트롤러에서는 Ajax 통신시에는   return "AjaxView"; 로 FrontControllerServlet으로 반환하고 
+   								필요한 데이터 ( 문자열 또는 json ) 는  request.setAttribute("responsebody",문자열 또는 json ) 으로 
+   								AjaxView에 공유한다 
+   								
+   								회원검색기능과 회원가입시 아이디 중복확인기능에서 Ajax 통신을 테스트해본다 

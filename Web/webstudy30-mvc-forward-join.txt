@@ -1,0 +1,30 @@
+**webstudy30-mvc-forward-join**
+
+DB Modeling : ERD 연습 ( src\main\resources 에 저장 ) 
+SQL DDL : foreign key 제약조건 ( src\main\resources 에 저장 ) 
+SQL DML : join sql 연습 
+
+Application Modeling : Class Diagram 연습 ( src\main\resources 에 저장 ) 
+
+View : jsp forward 를 적용해본다 
+
+환경설정 :  library -> WEB-INF\lib\jstl-1.2.jar( JSTL 이용 ) 와 tomcat-juli-8.5.77.jar ( DBCP 적용 DAO 단위테스트를 위해 )
+
+
+요구사항 )  웹프로젝트를 실행하면 첫화면에 총사원수 3명 이라는 정보가 제공되어야 한다 
+			총사원수는 데이터베이스에 저장되어 조회되어야 하는 정보
+			
+		   				 					 	FrontControllerServlet -- HandlerMapping -- HomeController -- EmployeeDAO -- Database 
+ client	 index.jsp(jsp:forward)	->					   |
+            		  			    			home.jsp 에서 사원수 제공 
+                  
+구현방안                   
+			index.jsp에서 jsp forward action tag 를 이용해 HomeController.do 를 실행하여 Model과 연동한 후 결과 정보를 
+			view(home.jsp) 로 제공하면 됨 
+			
+			jsp forward action tag 단위 테스트 : webapp\forward-test 디렉토리 내에서 테스트 
+
+ web mvc  기본 프로그램 구성 
+ org.kosta.myproject.model : DataSourceManager ( dbcp ) 
+ org.kosta.myproject.controller : FrontControllerServlet, HandlerMapping, CheckLoginInterceptor , Controller 
+

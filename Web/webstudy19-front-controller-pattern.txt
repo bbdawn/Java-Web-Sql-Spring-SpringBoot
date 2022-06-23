@@ -1,0 +1,187 @@
+**webstudy19-front-controller-pattern-step1**
+
+- Front Controller Design Pattern 
+  모든 클라이언트의 요청을 하나의 진입점(FrontController)으로 통합하여 처리하는 디자인 패턴 
+  
+  웹 어플리케이션 서비스의 공통 정책을 일관성 있게 효과적으로 처리할 수 있다 
+  ( 공통 정책 : 인코딩 , 보안(인증,인가) , 예외처리 , 데이터수집 , 마케팅정책 등 ) 
+  
+  FrontController 적용 전 Web MVC 구조
+  
+  client 1 --- FindCarByIdServlet --- Model
+  client 2 --- RegisterCarServlet --- Model  
+  
+  FrontController 적용 후 Web MVC 구조
+  
+  client 1 --- 검색요청 --- FrontControllerServlet --- Model 
+  client 2 --- 등록요청 --- 
+  client 3 --- 수정요청 --- 
+  
+  모든 클라이언트의 다양한 요청을 하나의 FrontController 가 처리한다 
+  
+  - 위 구조를 구현하기 위한 방안 
+  FrontControllerServlet이 다양한 요청을 구분하기 위해서는 form 의 hidden tag를 이용해서 command name으로 
+  value를 전송해서 FrontControllerServlet이 클라이언트의 요청을 인지하게 하면 된다 
+  또한 query string 방식을 이용하는 것도 가능하다 ( url?command=register ) 
+  
+  FrontControllerServlet의 구조 
+  // 컨트롤러 로직을 정의 
+  doDispatch(){
+  
+  }  
+  doGet(){
+  	doDispatch(); 
+  }
+  doPost(){
+  	// post 방식 인코딩(한글처리 )작업 
+  	doDispatch();
+  }
+  
+  refactoring : 리팩토링이란 결과의 변경 없이 코드의 구조를 재조정함을 의미 
+  				 입,출력 결과는 동일하되 프로그램의 구조를 개선함으로써 생산성 및 유지보수성 , 가독성을 높이는 활동 
+  
+  생각해 볼 점 : 클라이언트의 다양한 요청을 처리하는 doDispatch 메서드의 처리 작업이 비대하다 
+  개선점 : 방안1 -> 각 요청별로 메서드 분할 
+  
+ FrontControllerServlet의 구조 Version 2 
+  // 컨트롤러 로직을 정의 
+  doDispatch(){
+  	if(){
+  		findCarByNo();
+  	}else if(){
+  		registerCar(); 
+  	}
+  } 
+  findCarByNo(){}
+  registerCar(){} 
+   
+  doGet(){
+  	doDispatch(); 
+  }
+  doPost(){
+  	// post 방식 인코딩(한글처리 )작업 
+  	doDispatch();
+  }
+  
+  
+  **webstudy19-front-controller-pattern-step2**
+  
+    refactoring : 리팩토링이란 결과의 변경 없이 코드의 구조를 재조정함을 의미 
+  				 입,출력 결과는 동일하되 프로그램의 구조를 개선함으로써 생산성 및 유지보수성 , 가독성을 높이는 활동 
+  
+    step1 FrontControllerVer2 에서 doDispatch() 및 개별 컨트롤러 로직 정의 메서드 ( findCarByNo() , registerCar() ) 를 
+    정의해서 요청에 대한 서비스를 처리했다 
+    
+    생각해볼 점 : 하나의 FrontControllerServlet class에서 모든 요청을 처리하므로 
+    			   서비스가 추가될수록 클래스 자체의 업무 및 코드량이 증가 -> 생산성 및 유지보수성 저하 
+    			   
+    개선방안 : 	개별 컨트롤러 로직 정의 메서드 ( findCarByNo() , registerCar() ) 를  별도의 클래스로 분화시켜 
+    			독립적인 단위로 개발하고 운영할수 있도록 변경 
+    			
+    			client --- 검색 --- FrontControllerServlet	-- FindByNoController --- Model -- DB 
+    			client --- 등록  ---		   	                -- RegisterCarController
+  
+  
+    **webstudy19-front-controller-pattern-step3**
+    
+    ver1 :  FrontControllerServlet     doDispatch() 메서드에서 모든 요청을 처리 
+
+    ver2 : 개별 요청에 대한 컨트롤러 로직을 별도의 메서드로 분할 ex) findCarByNo() , registerCar() 
+
+	ver3 : 개별 요청 처리 컨트롤러 로직을 별도의 클래스에 담당  ex) FindCarByNoController , RegisterCarController 
+	
+			client --- 검색 --- FrontControllerServlet	-- FindByNoController --- Model -- DB 
+																findByNo()
+																
+    		client --- 등록  ---		   	                -- RegisterCarController
+    															register() 
+	
+	ver4(step3) :  ver3(step2) 의 구조는 FrontControllerServlet이 개별 Controller 객체의 다양한 메서드를 직접 호출해서 사용하는 구조 
+				     --> FrontControllerServlet 과 개별 Controller 객체는 결합도가 높은 상태 
+				     
+				     개선방안 :  개별 Controller 들을 계층구조화하여 다형성을 지원하도록 설계 
+				     			 -> 참고) 다형성 : 하나의 소통방식으로 다양한 객체들을 동작하게 한다  예)  재생버튼이라는 하나의 소통방식으로 유투브 , cdplayer등과 같은 다양한 플레이어를 동작시킬 수 있다 
+				     			 FrontControllerServlet 은  하나의 소통방식으로 다양한 컨트롤러 객체들을 제어할 수 있도록 설계를 변경 
+				     			 
+				     			 Controller Interface를 정의 
+				     			 abstract method : public String execute(HttpServletRequest request,HttpServletResponse response) throws Exception; 
+				     			 return 하는 String 정보는 클라이언트에게 응답하기 위한 view 정보 ( ex - findbyno-ok.jsp or registercar-result.jsp .. ) 
+				     			 -> forward 방식일때는 return "findbyno-ok.jsp";
+				     			     redirect 방식일때는 return "redirect:registercar-result.jsp"; 와 같이 서두에 redirect: 문자열을 명시하여 리턴한다 ( 참고 - Spring Framework에서도 동일한 방식을 사용 ) 
+				     			 
+				     			 모든 개별 컨트롤러는 위의 Controller interface를 구현하고 추상 메서드 execute() 를 자신에 맞게 정의해야 함  
+
+								 client -- 검색 -- FrontControllerServlet --        Controller interface  
+								 												  |								|
+								 												  FindByNoCarController	    | 	
+								 client -- 등록 --                                                           RegisterCarController 
+
+
+		ver5(step4) 
+		
+		문제점
+		위의 ver4(step3) 구조에서 서비스가 확장된다면 ( 컨트롤러가 추가된다면 ) 
+		FrontControllerServlet의 담당 컨트롤러 객체 생성 코드가 추가되어야 한다 
+		-> FrontControllerServlet 과 개별 컨트롤러는 결합도가 높은 상태 
+		
+	   개선방안 : 개별 컨트롤러 객체 생성을 전담하는 HandlerMapping(담당자 연결) 을 추가 설계하여 구현한다 
+	   
+	   client -- FrontControllerServlet -- HandlerMapping -- Controller Interface 
+	   																	|				|
+	   																FindController 	RegisterController 
+
+       Web MVC 에서 Front Controller Design Pattern을 적용했을 때 컨트롤러 영역의 요소 
+       
+       1. FrontControllerServlet :   모든 클라이언트의 요청을 통합하는 진입점의 역할을 하는 서블릿 -> 공통 정책을 수행 ( 인증 , 예외처리 , 인코딩 등 )
+       2. HandlerMapping : 개별 컨트롤러 객체 생성을 전담하는 Factory 객체 
+       						   FrontControllerServlet 에서 개별 컨트롤러 객체 생성의 부담을 덜고 결합도를 낮추어 유지보수성을 향상시키기 위해 설계 
+       						   ( 참고 : Spring Framework에서도 이러한 역할을 하는 객체를 HandlerMapping이라고 표현한다 ) 
+       3. Controller Interface : 개별 컨트롤러 객체의 상위 인터페이스 , 개별 컨트롤러 구현체들을 캡슐화, 추상화하여 
+       								다형성을 지원하기 위한 목적으로 설계 
+       								-> FrontControllerServlet에서는 개별 컨트롤러 구현체를 보지 않아도 상위 인터페이스인 
+       								   Controller의 abstract method인 execute() 만 실행하면 개별 컨트롤러들이 동작된다 
+       								   ( 다형성 : 하나의 소통방식으로 다양한 객체(컨트롤러객체)들이 각자의 방식으로 동작되는 성질 ) 
+       4. 개별 Controller 구현 객체 : 실제 클라이언트의 구체적인 요청를 처리하는 컨트롤러 로직을 정의한 객체  								   
+       								    						    	
+		
+       ver5(step4) 
+       생각해볼점 : 서비스가 확장될 때 , 즉 개별 컨트롤러가 추가 될 때 매번 HandlerMapping의 create 메서드의 구현부 코드가 추가되어야 한다 
+       				-> 컨트롤러 객체 생성을 자동화하는 방안 ( ver6 , step5에서 설계 , 구현해본다 )  
+
+        
+       ver6(step5) 
+       
+       개선방안 :  HandlerMapping의 컨트롤러 객체 생성을 자동화 
+       			   java Reflection API 를 이용해 컨트롤러 객체를 런타임시에 자동 생성하도록 한다
+       			   Reflection : 런타임 시점에 동적으로 객체 생성하고 제어할 수 있도록 지원하는 기술 
+       			   단위테스트  : src\test\java 에서 Reflection API 를 테스트  	
+       			   
+       			   HandlerMapping 의 create 메서드에 객체 자동 생성되도록 기능을 구현 
+       			   -> 효과 : 컨트롤러가 추가 되어도 ( or 서비스가 확장되어도 ) 
+       			   			  HandlerMapping의 코드는 추가 변경 될 필요없다 -> 생산성, 유지보수성 향상 
+
+        ver7(step6)
+        
+        생각해볼점 :   client 측에서 command 정보 , 즉 컨트롤러명을 form 의 hidden 또는 query string 형식으로 
+        				매번 전송해야 한다 
+        				예1 )   <form action="FrontControllerServlet" >
+        						 <input type="hidden" name="command" value="RegisterCarController">
+        						 </form>
+        						 
+        				예2 )   <a href="FrontControllerServlet?command=FindCarListController">차리스트</a>
+        				
+        개선방안 :     url-pattern 과 함께 command 매번 전송하는 구조에서 
+        				url-pattern 상에서 컨트롤러 명을 명시해 전송하는 구조로 변경 
+        				-> *.do  url-pattern : FrontControllerServlet에서 처리하도록 설정 
+        				
+        				예1 )   <form action="RegisterCarController.do" >        						
+        						 </form>						 
+                        
+                        예2 )   <a href="FindCarListController.do">차리스트</a>
+        
+        				보다 간결한 방식으로 요청이 가능하다 
+        				
+        				*.do 스타일 요청 처리에 대한 단위테스트 : 별도의 webstudy20-front-controller-do-test 프로젝트에서 테스트 후에
+        				현 프로젝트 webstudy19-front-controller-pattern-step6에 적용한다 
+        				
+        				

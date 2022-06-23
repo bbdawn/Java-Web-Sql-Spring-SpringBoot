@@ -1,0 +1,92 @@
+**10일차 주요목차**
+@1 review
+@2 java.util.List
+------------------
+@1 review
+ # static(붕어빵 틀(class)의 멤버) / classloading / metaspace   
+ # final (상수_대문자 / 오버라이딩 불가 / 상속 불가)
+ # abstract
+	class / 객체상속x, 부모역할에 집중
+	method / 구현부x, sub에게 구현강제
+ # interface
+	- 다양한 계층구조를 통한 다형성 극대화 (여러개의 스타일로 다형성을 적용할 수 있으니까)
+	- 인터페이스끼리는 다중상속0(추상메서드를 상속시키는 것), 
+		(*자바는 다중상속이 안됨. 인터페이스는 다중상속 가능하다면서 -> 다양한 계층구조를 형성할 수 있다는 차원에서는 다중상속의 효과를 가집니다)
+	- 사용하는 측과 서비스 제공하는 측과의 약속 (소통방식) 
+	- field -> static final
+	- abstract method (구현부 없음)
+	- static method(1.8이상)
+	- default method(1.8이상)
+ # abstract vs interface
+   - 공통점 : 
+	1. new로 객체생성 못함. 자기가 주인공으로서 돌아다니는게 목적이 아님. 다형성을 지원하기 위한 Super(상위) 타입을 제공 => 계층구조
+	2. abstract method 자식(하위,sub)에게 구현 강제. 
+   - 차이점 : 
+	1. abstract는 단일 계층구조, interface는 다양한 계층구조.
+	2. abstract는 인스턴스변수를 쓸 수 있음 interface는 인스턴스변수를 못씀 static final만 가질 수 있음(metaspace에 저장됨)
+	3. abstract는 상속성이 있음(부모멤버(객체정보) 물려줄 수 있음) 
+	interface는 상속성이 없음(부모멤버(객체정보)를 물려줄 수는 없음. 껍데기임) 
+ # collection
+	기능명세
+	<E>generic
+	set 중복인정x, 
+		treeset(정렬) LinkedHashSet(입력순서기억)
+	list 순번으로 관리, 인덱스
+		ArrayList(검색용이), LinkedList(등록삭제용이)
+
+
+
+
+
+@2 Collection API, Java Collection Framework(JCF)
+	collection계열 or API or Framework은 다양한 데이터들을 효과적으로 제어하고 관리하기 위한 프로그램의 모음
+	(library->재사용 가능한 프로그램들의 모음)
+	
+
+  # java.util.Collection interface는 Collection 계층 구조의 최상위 인터페이스이다. (기능 명세의 가장 상위)
+ 	 ("The root interface in the collection hierarchy")
+  	모든 자바 자료구조체 (ArrayList, TreeSet ..)들은 최상위 인터페이스인 Collection에서 명시한
+  	abstract method를 자신에 맞게 구현하고 있다 
+  	
+  #	collection 계열의 대표적인 인터페이스 : Set, List, Map
+  	
+  	
+  #	Generic <> : 타입을 지정 ex) LinkedHashSet<String>  set=new LinkedHashSet<String>();
+  				 데이터 타입 안정성을 보장 (ex. 문자가 들어가야하는데 숫자가 들어가면 안됨!!) 
+  				 객체 캐스팅 절차를 감소할 수 있음
+  				 
+  # Set	
+  		Set계열 : 데이터 중복 인정 x, 즉 set계열의 자료구조체는 요소로 동일한 데이터를 중복해서 저장하지 않는다
+  		Set 계열의 class : 	LinkedHashSet(중복인정X, 등록된 순서를 보장)
+  							TreeSet(중복인정x, 정렬기능 내장)
+ 
+  # List
+  		List 계열 : 인덱스(순번)로 관리
+  		List 계열의 class : 	ArrayList (인덱스로 관리, 검색에 용이)
+  							LinkedList(인덱스로 관리, 추가/삭제에 용이)
+  	
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

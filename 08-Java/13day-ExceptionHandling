@@ -1,0 +1,57 @@
+**13일차 주요목차**
+@1 review
+@2 Exception Handling
+@3 Map과 Exception Handling을 적용한 미니 프로젝트
+-------------------
+
+@1 review
+ # abstract 
+	- class 객체x
+	- method 구현강제
+ # interface 
+	다양한 계층구조 형성, 다형성 
+
+ # class diagram relationship
+	- association
+	- aggrigation
+	- compositon
+	- 상속 generlization
+	- 인터페이스 realization
+
+ # collection
+	- Set	중복x
+	- List	 인덱스
+	- Map	 key value
+	- Stack  FILO
+	- Queue LILO,FIFO
+
+
+@2 Exception Handling
+ # Exception Handling관련 주요 키워드 5가지
+  1. try		: Exception 발생 예상 지점 영역 지정할 때 사용, 예외발생 예상지점 블럭
+  2. catch		: Exception 발생시 대안 흐름 정의해 실행, 대처방안
+  3. finally	: Exception 발생 여부와 상관 없이 항상 실행
+  4. throws		: Exception 발생되면 호출한 측으로 Exception을 전달한다
+  5. throw		: Exception 발생 조건시에 Exception을 발생
+
+ # Throwable의 자식클래스(sub class): Error와 Exception
+ # Exception계열 즉 자식클래스 Exception은 RuntimeException 계열의 예외 클래스를 제외한 모든 예외클래스는
+   생성자와 메서드에서 예외전파를 하기 위해서는 throws를 명시해야한다. 
+ 
+ 	UnCheckedException : RuntimeException계열, 별도의 throws 명시하지 않아도 RuntimeException 계열은 전파가 된다. 
+ 	CheckedException : RuntimeException계열을 제외한 모든 Exception, Exception 발생시 전파를 위해서는 throws를 명시해야함. 
+ 	
+ 	
+ 	
+ @4 자바 문자열 String / StringBuilder / StringBuffer(thread 공부 후 설명)
+  String : 불변(변하지 않는 상수), heap 메모리 영역 내 String Constant Pool에 저장
+  			한번 생성된 문자열을 여러 곳에서 공유해 사용 -> 동일한 문자열이 자주 사용될 경우 메모리를 효율적으로 절약할 수 있다
+  			String 문자열을 메서드로 추가 또는 삭제 또는 수정할 경우 -> 새로운 문자열 생성
+  			
+  StringBuilder(StringBuffer도 동일한 특징) : 가변, 문자열 자체가 변경, 메서드로 문자열을 추가/삭제/수정할 경우 자체가 변경. 
+  											문자열 자체가 자주 변경될 때 String에 비해 유리.
+   --------------------
+   			String  	vs 	StringBuilder vs StringBuffer
+  		 	불변				가변				가변
+   생성시	새로생성			자체가변경됨		자체가 변경됨
+   											thread-safe(이후에 공부 예정)

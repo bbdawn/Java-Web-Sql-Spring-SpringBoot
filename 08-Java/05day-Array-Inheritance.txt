@@ -1,0 +1,195 @@
+**5일차 주요 목차**
+ @1 review
+ @2 Array
+ @3 Overloading
+ @4 Inheritance
+ @5 
+ 
+ -----------------
+@1 review
+#개발환경
+jdk		
+jre	
+jvm 실행의 주체 (통역 OS-java application)
+	메모리 관리 GC(가비지컬랙션) 
+
+#Array
+다수 데이터 관리
+
+#UML
+ClassDiagram
+use a // association
+has a // aggregation
+consist of // composition
+
+#variable
+1. local variable - stack - 임시로 저장
+2. instance variable - heap - 객체의 저장정보 저장
+3. static variable - metaplace
+
+#제어문
+1. 조건문
+if else
+swtich case
+2. 반복문
+for
+while
+do while(반드시 한번은 실행시키겠다)
+
+#data type
+1. primitive type (기본적) 정수/실수/문자/논리
+2. reference type (딱 정해놓을 수 없음. 데이터를 참조하는)
+	class명, Array
+
+#basic syntax
+package
+import
+class - instance variable
+constructor
+
+#접근제어자
+public(+) 
+protected(#)
+default(~)
+private(-)
+
+#keyword
+new 객체를 생성할 때
+this 현재 실행중인 객체를 가르킬 때
+
+
+ @2 Array
+ # review
+ 	person[] pa=new Person[3]; //배열 선언 및 생성
+ 	pa[0]=new Perwon("아이유",30); //배열 요소를 할당
+ 	
+ 	Person[] pa={new Person("박보검" 28),new Person("강하늘",36))};//배열 선언, 생성, 할당 동시에
+ 	
+ 	[step1]										ItemVO class
+ 	TestItemService 	--배열 전달--> 			ItemService
+ 	 main						s
+ 	 itemService.printItemArray()(배열) ---> public void printItemArray(Item[] itemArray}{}
+ # 2차원 배열
+ //3년간 매월(총 12개월) 강유량을 저장 
+ 	int [][]rain = new int[3][12]; 3열 12줄
+ 	rain[0][0]=100;
+ 	......
+ 	rain[2][11]=500; //맨 마지막
+
+ //경기중학교 1학년 3개반, 2학년 4개반, 3학년 6개반 	
+ 	int[][]school=new int[3][];
+ 	school[0]=new int[3];
+ 	school[1]=new int[4];
+ 	school[2]=new int[6];
+ 	
+  @3 Overloading : 동일한 메서드명(생성자 포함)으로 다양한 매개변수를 정의하는 프로그래밍 기법 -> 사용하는 측에 편의성 증대 
+  					사용자 편의성을 제공한다. eat만 알면 다양하게 사용할 수 있게됨. 
+  	1. 메서드 오버로딩 [test 3]
+  		ex) public void eat(){}
+  			public void eat(String menu){}
+  			public void eat(int count){}
+  			public void eat(String menu,int count){}
+  			public void eat(int count,String menu){}
+  			public void eat(int c, String m){} //error : 변수명만 다를 뿐 순서, 타입, 개수가 같으므로 같은 메서드로 인식
+  	
+  	2.	생성자 오버로딩
+  		ex)	class Person{
+  				Person(){}
+  				Person(String name){}
+  				Person(String name, int age){}
+  			} 
+  	
+ 
+ @4 Inheritance(상속) 
+ 객체지향주요개념 : Encapsulation, Inheritance, Polymorphism
+ 
+ #Inheritance : 
+ - 부모(super class) 멤버(instance variable변수, method메서드) 를 물려받아 자식(sub class)이 재사용
+ - 특징 : 	Single Inheritance 자바는 단일상속이다 (직계 부모는 하나만 상속받을 수 있다)
+ 				-> 다중상속의 장점은 java Interface로 채택한다.
+ 			상속을 통한 개발의 생산성을 향상시킬 수있다 (코드 한번 작성한걸로 재사용 가능 -> 재사용성 높아짐, 생산성 높아짐)
+ 			계층구조(hierarchy)형성을 통한 다형성 적용환경을 제공한다. 
+ 
+ 
+ UML의 Class Diagram: is a relationship -> generalization
+ 						사람은 동물이다 개는 동물이다 고양이는 동물이다
+ 						매니저는 사원이다 엔지니어는 사원이다 비서는 사원이다
+ 						
+ extends : 상속을 위한 자바 키워드
+ 			public class 자바 클래스 extends 부모 클래스{ //extends-확장하다  <부모를 확장해서 자식을 만든다>
+ 			
+ 			}
+ 			ex) public class Person extends Animal{ //애니멀을 확장해서 펄슨을 만든다
+ 			
+ 			}
+ 			
+ 			*** extends는 확장을 의미. 부모를 확장해서 자식을 만든다 
+			*** 상속을 받더라도 부모의 private member(instance variable, method)에는 자식에서 접근할 수 없고
+				getter setter를 이용해서 접근한다. [step5]
+			
+			
+#접근제어자 access modifier 중 protected [step6] 
+	public 		: 다른 패키지에서 접근 가능
+	protected 	: 같은 패키지 내에서 접근 가능. 단, 상속관계에 있을 때는 다른 패키지에서 접근 가능
+	default 	: 같은 패키지 내에서 접근 가능
+	private		: 같은 클래스에서만 가능
+	
+#super : 부모를 가르키는 자바 예약어(참고-현재 자신의 객체를 가르키는 자바 키워드는 this)
+	1. super.멤버 (인스턴스 변수 및 메서드) // System.out.println(super.name); --> super. :: 부모!!
+	2. super() : 부모 클래스의 생성자를 호출하여 부모 객체를 생성하게 하는 역할 
+	[step8,9]	 반드시 생성자 구문의 첫 라인에 위치 (아니면 compile error 뜨게됨)
+				 별도의 super() 구문 명시가 없으면 컴파일 시에 자동 삽입된다. -> 그렇지만, 명시적으로 호출이 필요한 경우가 있음. 
+				 생성자의 super() 구문 원리에 의해 자식 객체 생성시 부모 객체가 선행되어 생성되는 구조
+				 
+	
+	
+	
+# 	부모 	class A;
+	자식		class b extends A;
+		
+			B b=new B(); //자식 객체 생성
+			
+			자식 B객체를 생성할 때 부모 A객체부터 생성된 후 자식 B의 객체가 생성된다 <-- super();의 역할
+			 
+
+	
+	
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

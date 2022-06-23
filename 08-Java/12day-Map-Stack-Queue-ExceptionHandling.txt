@@ -1,0 +1,70 @@
+**12일차 주요 목차**
+@1 review
+@2 Map
+@3 Stack, Queue
+@4 ExceptionHandling
+----------------------
+
+
+@1 review
+# interface
+	다양한 계층구조 형성, 다형성 높아짐
+	
+	
+@2 Map	
+# java Collection 계열의 주요 요소
+	(1) Set Interface : 중복인정x
+		TreeSet class : 중복인정X,  정렬기능
+		LinkedHashSet class : 중복인정X, 입력 순서를 기억
+		
+	(2) List Interface : index(순번)로 관리
+		 ArrayList class : index로 관리, 검색에 유리
+		 LinkedList class : index로 관리, 추가와 삭제에 유리 
+	(3) Map	Interface : key와 value 쌍으로 저장
+		     			key로 제어 (검색, 삭제, 수정 작업에 key를 이용)
+					    key는 유일값, 만약 동일한 key로 등록될 경우에는 value가 업데이트된다
+		   TreeMap: key value 저장, 정렬기능
+		   LinkedHashMap : key value 저장, 입력 순서를 기억
+		   
+		   -> [step1]예제에서 어제 구현했던 CartService를 추가구현
+		   
+
+@3 Stack, Queue
+ # Stack : LIFO(Last In, First Out) -> 나중에 입력된 요소가 먼저 추출 [step2]
+ # Queue : FIFO(First In, First Out) -> 먼저 입력된 요소가 먼저 추출
+
+@4 ExceptionHandling (예외처리)
+: 프로그램 실행 시 예외적인 상황이 발생할 때 대안 흐름을 수행하고 프로그램을 정상수행시키는 것이 예외처리
+	(예외 상황 발생시 대안 흐름을 실행)
+	
+	참고) 실행의 주체인 JVM은 Exception(예외)상황이 발생되면 Exception메세지를 출력하고 
+		  즉시 프로그램 실행을 종료시킨다.  -> Exception Handling을 적절히 하면 대안흐름 실행 후 정상 수행
+
+ # Exception Handling관련 주요 키워드 5가지
+  1. try		: Exception 발생 예상 지점 영역 지정할 때 사용, 예외발생 예상지점 블럭
+  2. catch		: Exception 발생시 대안 흐름 정의해 실행, 대처방안
+  3. finally	: Exception 발생 여부와 상관 없이 항상 실행
+  4. throws		: Exception 발생되면 호출한 측으로 Exception을 전달한다
+  5. throw		: Exception 발생 조건시에 Exception을 발생
+
+ # Throwable의 자식클래스(sub class): Error와 Exception
+ # Exception계열 즉 자식클래스 Exception은 RuntimeException 계열의 예외 클래스를 제외한 모든 예외클래스는
+   생성자와 메서드에서 예외전파를 하기 위해서는 throws를 명시해야한다. 
+ 
+ 	UnCheckedException : RuntimeException계열, 별도의 throws 명시하지 않아도 RuntimeException 계열은 전파가 된다. 
+ 	CheckedException : RuntimeException계열을 제외한 모든 Exception, Exception 발생시 전파를 위해서는 throws를 명시해야함. 
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+					

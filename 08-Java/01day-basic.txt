@@ -1,0 +1,160 @@
+**1day 주요목차**
+- 전체 커리큘럼 
+- 과목별 커리큘럼 
+- Java 특징과 구동방식 
+- Java 기본 문법 
+
+-------------------------------------
+- 전체 커리큘럼 
+Java SE 
+Database & JDBC 
+HTML & CSS & JavaScript 
+Servlet & JSP ( Model2 MVC , Front Controller 등 ) 
+Ajax 
+Semi Project 
+Framework ( Spring IOC , DI , AOP , SpringMVC , jUnit , SpringBoot , Thymeleaf , Security , Rest , MSA-SpringCloud, JPA )
+Final Project 
+
+- 과목별 커리큘럼 ( JavaSE 약 4주간 ) 
+Java SE 환경설정 , 특징 , 구동방식 
+Java 기본문법 ( 변수 , 메서드 , 생성자 ) 
+OOP ( 객체지향프로그래밍 개념 ) 
+Data Type 
+객체 초기화 단계 
+제어문 ( 조건문 , 반복문 ) 
+변수의 종류와 범위 
+배열( Array ) 
+상속 ( Inheritance ) 
+다형성 ( Polymorphism ) 
+static , final , abstract , interface 
+Collection 
+Exception 
+IO 
+Thread 
+Network 
+
+- Java 특징과 구동방식 
+  Java 의 특징 
+  1) 객체 지향 언어이다 
+  2) 플랫폼 독립적
+  3) 메모리 관리 
+  
+  Java 구동방식 
+  HelloWorld.java --- compile --- HelloWorld.class --- runtime --->  실행결과 
+  
+  JDK ( Java Development Kit : 자바 개발 도구 ) > JRE ( Java Runtime Environment : 자바 실행 환경 ) > JVM ( Java Virtual Machine : 자바 가상 기계 )
+
+  Java SE 개발환경 구축 : jdk 를 설치 , IDE(Integrated Development Environment : 통합개발환경) 인 이클립스를 설치 후 설정 
+
+ - Java의 기본 문법 
+ class 정의 -> 객체 생성 및 실행 -> 객체 지향 개념 
+ 변수 용법 -> 메서드 용법 
+
+- 객체 지향 개념 (  Object Oriented Concept ) , OOP ( Object Oriented Programming ) 
+   객체 지향이란 시스템의 기본 단위를 객체로 상정하고 
+   객체와 객체의 관계를 중심으로 분석 설계 구현하는 개념을 말한다 
+   
+   Object(객체) : 시스템의 기본 단위 ( ex - 생물의 세포 ) 
+   					속성과 기능으로 구성 
+   					속성( attribute, variable ) - 객체의 정보를 저장 ( ex - 축구선수의 이름, 신장 , 몸무게 , 골기록 ) 
+   					기능( operation , method ) - 객체의 기능을 정의 ( ex - 축구선수가 슛하다, 패스하다 , 달리다 ) 
+   	
+   Class(클래스 ) : 객체 생성을 위한 틀 ( 설계도 ) 			
+   					  Class 는 Object의 틀( 설계도 ) 이다 
+   					  ex) 붕어빵틀 - class     붕어빵 - object 
+   					  
+   					  
+   - Java 기본 문법 
+   1) 변수 : 정보를 저장하기 위한 공간    ( step3, 4 ) 			  
+   	   int i=1; // int 는 정수형 데이터 타입 , i 는 변수명 , = 할당 , 1은 데이터 
+   	   이후 공부 예정 ) 메서드 내에서 선언되면 지역변수 
+   	   					  클래스 레벨에서 선언되면 인스턴스변수라고 한다 
+   	   					  
+    2) 메서드 : 객체의 기능을 정의 ( step5 , 6) 	   		
+       a) Worker Method 와 Calling Method (메서드 정의와 메서드 호출) 			  		  					  	
+       b) passing argument ( 메서드 인자값을 전달 )  
+       c) return value 
+
+
+			public : 접근제어자 ,  void : 리턴값이 없을 때 사용하는 자바 키워드 
+			eat : 메서드명   , (int count) : 매개변수영역 , parameter 
+       ex)  public void eat(int count){ 
+       
+            }
+			
+			String : 리턴타입 , return 은 호출한 측으로 정보를 반환할 때 사용하는 자바 키워드
+       ex2) public String eat2(){
+       		 return "맥주";
+       		}
+
+  - 접근 제어자 ( Access Modifier ) 
+  	 class , variable , method 앞에 접근 권한을 명시하기 위해 사용하는 자바 예약어 
+  	 
+  	 public > protected > default > private 
+  	 
+  	 public : 어디서나 접근 가능 ( 다른 패키지에서 접근 가능 ) 
+  	 protected : 기본적으로는 같은 패키지내에서만 접근 가능 ( 단 상속관계에서는 다른 패키지에서도 접근 가능 ) - 이후 공부예정 
+  	 default : 접근 제어자를 표기하지 않으면 default , 같은 패키지 내에서만 접근 가능 
+  	 private : 동일한 클래스내에서만 접근 가능, 즉 외부에서는 접근 불가 
+
+	 step7 에서 접근 제어자를 테스트 
+
+ 
+  **2일차 주요 목차**
+  - review 
+  - OOP 주요 개념 중 Encapsulation 
+  - getter , setter  method 
+  - Constructor ( 생성자 ) 
+  - Java Data Type 
+  - 연산자
+  - 제어문 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

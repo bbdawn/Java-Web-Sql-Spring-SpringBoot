@@ -1,0 +1,75 @@
+**17day 주요 목차**
+@1 Thread 개념
+@2 Thread 생성방법
+@3 Thread 동작원리 : start()와 run()
+@4 Multi Threading
+@5 synchronized(동기화처리)
+------------------
+
+@1 Thread 개념
+
+ # Thread : 실, 실행단위(프로세스_현재실행중인프로그램 내의 실행단위)
+			실이 여러개 모여서 옷이 만들어진다
+			옷(프로세스)을 만들기 위해서는 여러개의 실(스레드)이 필요하다
+
+ # Thread : 프로세스 내의 세부적 실행 단위
+			프로세스란 현재 실행중인 프로그램을 의미
+			하나의 프로세스는 여러개의 스레드가 실행되면서 구성될 수 있다 
+			사전적 의미는 "실(thread)"이다 -> 여러개의 실(thread)이 모여서 옷(process)을 만든다 
+				ex) 동영상 플레이어가 현재 실행중이다 -> 동영상 플레이어 프로세스 
+					동영상 서비스를 위해서는 영상(thread), 음향(thread), 자막(thread)가 필요하다 
+					이러한 동영상 플레이어 프로세스 내의 세부적 실행단위를 스레드(thread)라고 한다. 
+					이러한 영상, 음향, 자막 스레드들이 동시에 실행되는 것을 Multi Threading(멀티 스레딩)이라고 한다. 			
+
+@2 Thread 생성방법 [더 선호 : 2번 다른 것 좀 더 객체지향적임. 상속받도록 허용, 다중구현 가능하니까]
+  1) extends Thread
+  2) implements Runnable
+  #) 스레드 생성 두가지 방법 중 implements Runnable 방식을 더 권장하는 이유는
+ 	 자바는 단일상속이고 이후 별도의 클래스를 상속할 필요가 있는 경우를 대비해서이다
+ 	 인터페이스는 여러개를 implements 할 수 있다  
+
+
+
+@3 Thread 동작원리 : start()와 run()
+	start() : 스레드를 실행가능상태(Runnable)로 보낸다
+			  이후 JVM이 스케줄링을 해서 실행(Running)상태로 전이된다
+	run() : 스레드의 실행 내용을 정의한다
+			JVM이 스케줄링을 하면 실행되는 메서드 
+			run()메서드가 실행을 마치면 스레드는 종료된다 
+	
+  #) 스레드별로 스택메모리가 생성된다.
+  	 local variable 정보는 stack에 저장되므로 
+  	 thread별로 local variable이 운용된다 
+  	 
+  #) Thread의 setDaemon(true): 자신을 생성한 스레드가 종료되면 해당 스레드도 함께 종료되도록 처리
+	ex) Word 스레드에서 Backup 스레드를 생성하고 start
+		Backup스레드를 setDemaemon(true)로 설정 
+		이 경우에는 Word 스레드가 작업종료되면 Backup 스레드 또한 함께 종료된다
+
+  #) Thread는 우선순위방식을 채택함 (가장 낮은 우선순위 1, 기본 우선순위 5, 가장 높은 우선순위 10)
+  	-> 운영체제별로 우선순위가 적용되는 여부는 다르므로 참고만 한다 
+  	
+  
+  
+  
+  
+  
+  
+
+@4 Multi Threading
+@5 synchronized(동기화처리)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

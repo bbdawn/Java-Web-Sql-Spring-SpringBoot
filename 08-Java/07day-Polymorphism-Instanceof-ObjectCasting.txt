@@ -1,0 +1,116 @@
+**7일차 주요 목차**
+@1	Polymorphism 다형성
+@2	Instanceof 연산자
+@3	ObjectCasting
+
+@0 	review
+	Encapsulation 
+		인터페이스/임플리멘테이션 나눠서 
+		인터페이스는 공개, 임플리멘테이션은 감추는 것
+	Inheritance 
+		1. 좋은 부모클래스를 만들어서 자식클래스에서 부모클래스를 물려받게하는 것
+			(부모멤버 재사용) 재사용성 높아짐 - 생산성 높이게
+		2. 계층구조 형성
+		3. 다형성 적용 환경이 됨
+	Polymorphism 
+		1.다양한 형태를 가질 수 있다. 
+		2.참조변수는 다양한 자식or하위 객체를 참조할 수 있다 3.하나의 소통방식으로(메세지방식으로,interface) 다양한 객체들이 각자의 방식으로 다양하게 동작하는 성질. 
+
+	상속 extends / super-this / 단일상속 / overriding(부모메서드 재정의) / overloading
+
+	uml : 분석 설계 언어 
+	class diagram / relation-association, aggregartion, composition, generalization
+
+@1	Polymorphism 다형성
+  	- 객체지향 주요개념 Encapsulation, Inheritance, Polymorphism
+  	- poly 다양한 morphism 형태
+  	- 하나의 메세지 방식으로 다양한 객체들이 각자 방식으로 다양하게 동작하는 성질을 말한다. 
+  	# polymorphism(다형성)을 적용하기 위해서는 계층구조(hierarchy) 형성이 필요하다
+  		(참고 - Inheritance_상속의 장점은 부모 멤버를 물려받아 자식이 재사용하고
+  				계층구조를 형성해서 다형성 적용환경을 제공한다)
+  				
+  	# 참조변수는 다양한 객체를 참조할 수 있다
+  		-> 부모 타입의 변수에 다양한 자식 객체를 참조할 수 있다
+  		ex1) 	Animal a=new Animal();
+  				Animal a2=new Person(); //가능 -> 부모타입 Animal a2변수에 자식객체 Person을 참조할 수 있음
+  			
+  		ex2) 	class Product{}
+  				class Food extends Product{}
+  				class Computer extends Product{}	
+  				
+  				Product p=new Food(); //자식 객체를 부모 타입의 변수에 참조시킬 수 있다
+  				Product p2=new Computer(); //자식 객체를 부모 타입의 변수에 참조 가능
+  				
+  				사용하는 측								서비스를 제공하는 측
+  				main{									class KostaMarket{
+  					rv.buy(new Food());		   ---->	public void buy(Product p){ //부모타입의 매개변수(참조변수)로 다양한 자식 객체를 처리
+  					rv.buy(new Computer());				}
+  				}
+  				(참고) rv : reference variable			}
+
+
+	# 결합도(coupling), 의존도 
+		- 어떤 모듈이 다른 모듈에 의존하는 정도를 나타내는 것
+		-> loose coupling(느슨한 결합도, 낮은 결합도)을 지향해야한다.
+	# 응집도(cohesion)
+		- 모듈 내부의 기능적인 응집 정도 -> 자신의 역할에 집중하는 정도
+		- 식당은 밥을 잘해야해. 세무회계를 잘해야하는건 아니야 
+		- high cohesion (높은 응집도)을 지향해야한다
+	==> 높은 응집도, 낮은 결합도 --> 소프트웨어의 품질을 높게한다
+
+
+
+@2	Instanceof 연산자
+	- 객체 타입을 비교하는 연산자
+	- TRUE/FALSE를 반환한다
+	- is a relation이면 true를 반환한다 (부모타입이면 true)
+	
+	ex) 	class Animal{}
+			class Person extends Animal{}
+			---------------
+			Person p=new Person();
+			sysout(p instanceof Person); --> true
+			sysout(p instanceof Animal); --> true 사람은 동물이다 /is a 성립되므로 true (Person은 Animal의 자식이므로 true)
+	
+
+@3	ObjectCasting
+	- 	객체캐스팅, 객체 형변환
+	- 	부모 타입의 변수로 자식 객체를 참조할 경우 접근 가능한 영역은
+		부모의 멤버(인스턴스변수, 메서드)와 오버라이딩한 자식 객체의 메서드이다
+		만약 자식의 독자적 멤버(인스턴스변수, 메서드)에 접근하여 사용하려고 할 경우에는 
+		Object Casting(Object down Casting)이 필요하다
+		
+		
+		rv.pass(new Person()); ----> public void pass(Animal a){
+											a.부모멤버 및 오버라이드한 메서드는 바로 접근가능
+											만약 자식의 독자적멤버인 study()를 호출하려한다면 
+											Object Casting을 한다.
+											((Person)a).study();
+									}
+
+	
+	# 다형성 적용 배열
+		- 일반적으로 배열은 선언한 타입의 요소 객체만 할당 가능하다
+		ex) class Car{}
+					------
+					Car[]  carArray={new Car(),new Car()}
+		   하지만 부모타입의 배열에 자식 객체를 요소로 할당하는 것은 가능하다 -> 다형성
+		ex) class Animal{}
+			class Person extends Animal{}
+			class Dog extends Animal{}
+			--------------------
+			Animal[] aniArray={new Person(),new Dog()}---> 가능하다
+
+
+
+
+
+
+
+
+
+
+
+
+
+

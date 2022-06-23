@@ -1,0 +1,114 @@
+  **6일차 주요목차**
+  @1 Inheritance review 
+  @2 명시적 super(데이터, 데이터..)를 호출해야하는 이유
+  @3 Method Overriding 
+  @4 java.lang.Object
+  @5 Polymorphism(다형성) 
+
+  
+  -------------------------------------
+    @1 Inheritance review [step1]  
+  - Inheritance ( 상속 ) 
+    
+     객체 지향 주요 개념 : Encapsulation , Inheritance , Polymorphism 
+     
+     Inheritance : 부모 (super class) 멤버 ( instance variable , method ) 를 물려받아 자식(sub class)이 재사용  
+     
+     				 특징 : Single Inheritance 자바는 단일 상속이다 ( 직계 부모는 하나만 상속받을 수 있다 ) 
+     				         -> 다중 상속의 장점은 java Interface 로 채택한다 
+     				 		 상속을 통한 개발의 생산성을 향상시킬 수 있다 
+     						 계층 구조(hierarchy) 형성을 통한 다형성(Polymorphism) 적용환경을 제공한다 
+     						 
+     
+     UML 의 Class Diagram : is a relationship -> generalization 
+     							  사람은 동물이다  개는 동물이다  고양이는 동물이다
+     							  매니저는 사원이다  엔지니어는 사원이다  비서는 사원이다 
+     
+     extends : 상속을 위한 자바 키워드 
+     			 public class 자식 클래스 extends 부모 클래스 {
+     			 
+     			 }	
+     			 ex)  public class Person extends Animal{
+     			     
+     			      }						  
+     							
+     			extends 는 확장을 의미 , 부모를 확장해서 자식을 만든다 
+    
+    - 상속을 받더라도 부모의 private member(instance variable, method) 에는 자식에서 직접 접근할 수 없고
+       getter , setter를 이용해서 접근한다 
+      
+  
+    - 접근 제어자 access modifier 중 protected 
+       public : 다른 패키지에서 접근 가능 
+       protected : 같은 패키지 내에서 접근 가능 , 단 상속 관계에 있을 때는 다른 패키지에서 접근 가능 
+       default : 같은 패키지 내에서 접근 가능 
+       private : 동일한 클래스 내에서만 접근 가능 
+  	   
+
+  @2 명시적 super(데이터, 데이터..)를 호출해야하는 이유  
+  - super : 부모를 가르키는 자바 예약어 ( 참고 - 현재 자신의 객체를 가르키는 자바 키워드는 this ) 
+  		1. super.멤버  (인스턴스 변수 및 메서드 ) -> 부모의 멤버에 접근  step7 예제에서 확인 
+  		2. super() : 부모 클래스의 생성자를 호출하여 부모 객체를 생성하게 하는 역할 
+  					   반드시 생성자 구문의 첫 라인에 위치해야 한다( 아니면 compile error )
+  					   별도의 super() 구문 명시가 없으면 컴파일시에 자동 삽입된다 -> 명시적으로 호출해야 할 필요가 있는 경우가 있음
+  					   생성자의 super() 구문 원리에 의해 자식 객체 생성시 부모 객체가 선행되어 생성되는 구조 
+  					   
+  					   명시적으로 자식 클래스에서 super() 를 호출해야 하는 경우 -> step2 에서 확인 
+  					   -> 부모클래스의 매개변수있는 생성자가 명시되어있는 경우에는 
+  					   	  자식 클래스에서 생성자를 직접 명시해 부모클래스의 생성자 매개변수에 알맞은 인자를 직접 super(변수, 변수..)를 명시해서
+  					   	  부모 생성자를 호출하면 된다. 
+  					   	  ex) class Parent{
+  					   	  		int i;
+  					   	  		Parent(int i){}
+  					   	  
+  					   	  	  }
+  					   	  	  --------
+  					   	  	  class Child extends Parent{
+  					   	  	  	int j;
+  					   	  	  	Child(int i, int j){
+  					   	  	  		super(i); // 부모 생성자 매개변수에 맞는 인자를 전달하며 생성자 호출
+  					   	  	  		this.j=j;
+  					   	  	  	}
+  					   	  	  }
+  
+  @3 Method Overriding [step4,5] 
+     :	상속 받은 부모 메서드를 자신에 맞게 재정의
+    	상속 받은 부모 클래스의 메서드를 자식 객체의 용도에 맞게 구현부를 업데이트해서 사용하는 프로그래밍 기법
+    	참고) Overloading : 같은 이름으로 다양한 매개변수를 정의하는 프로그래밍 기법
+    	
+    	오버라이딩 규칙 : 접근제어자는 부모가 선언한 것에서 범위가 좁아지면 안 됨. (넓어지는 건 상관없음)
+		  				 리턴타입, 매개변수, 메서드명은 일치해야한다.
+		
+
+
+
+  @4 java.lang.Object [step6]
+  	: 모든 클래스의 최상위 클래스. 모든 클래스는 부모클래스로서 Object 클래스를 가지게된다
+  		클래스에 별도의 상속 표현이 없으면 자동으로
+  		
+  		
+  @5 Polymorphism (다형성) [step8]
+  	- 객체지향 주요개념 Encapsulation, Inheritance, Polymorphism
+  	- poly 다양한 morphism 형태
+  	- 하나의 메세지 방식으로 다양한 객체들이 각자 방식으로 다양하게 동작하는 성질을 말한다. 
+  	# polymorphism(다형성)을 적용하기 위해서는 계층구조(hierarchy) 형성이 필요하다
+  		(참고 - Inheritance_상속의 장점은 부모 멤버를 물려받아 자식이 재사용하고
+  				계층구조를 형성해서 다형성 적용환경을 제공한다)
+  				
+  	# 참조변수는 다양한 객체를 참조할 수 있다
+  		-> 부모 타입의 변수에 다양한 자식 객체를 참조할 수 있다
+  		ex) Animal a=new Animal();
+  			Animal a2=new Person(); //가능 -> 부모타입 Animal a2변수에 자식객체 Person을 참조할 수 있음
+  			
+  
+	  	
+  	
+  					   
+  					   
+  					   
+  					   
+  					   
+  					   
+  					   
+  					   
+  					   

@@ -1,0 +1,123 @@
+**3일차 주요 목차**
+ @1 review
+ @2 제어문 (조건문 switch case)
+ @3 제어문 (반복문 for, while, do while)
+ @4 객체 초기화 단계
+ @5 변수의 종류와 범위
+ @6 UML (Class Diagram)
+ @7 Class Diagram의 Relationship			
+ 
+
+@1 review
+*** 개발환경 
+jdk jre jvm 통역자,실행 자동메모리관리 GC
+
+*** 구동방식 
+#compile 
+#runtime 가장먼저실행 : main 
+
+*** OOP (Object Oriented Programming)
+#OOP 주요개념
+-캡슐화(encapsulation)
+	interface : 소통하는 부분 
+	Implementation : 구현하는 부분
+	public protected default private
+-상속(Inheritance)
+-다형성(Polyporphism)
+#OOAD
+#객체(object) - 생물의 기본단위 세포
+속성(attribute, variable)
+기능(operation, method)
+#클래스(class) // 객체는 붕어빵 클래스는 붕어빵틀
+
+***기본문법
+#package
+#import (다른 패키지에 있는 자원을 사용하고 싶을 때)
+#class
+#변수
+instance variable _ 인스턴스 변수 (객체의 속성변수 저장)
+local variavle _ 지역변수 (메서드나 생성자 내에서 생성해서 자기 로직을 수행하기 위해 임시로 저장)
+매개변수
+#constructor(생성자)
+클래스 내에서 생성자를 명시하지 않을 경우 컴파일러가 넣어줌. 
+객체 초기화 작업 
+#method (객체의 기능을 표현)
+
+***Java 데이터타입
+1. primitive type(기본형)
+	- 최대최소범위가 정해져있음
+		1byte	2byte	4byte	8byte	 []:기본형
+	-정수형	byte	short 	[int]	long(L, 은행에서사용) 	
+	-실수형			float(F)	[double]
+	-문자형		char				//문자열일때는 string
+	-논리형 boolean
+	
+2. reference type(참조형타입)
+	데이터 사이즈 예측 불가. 별도의 공간에 정보 저장해놓고 참조해서 사용
+	클래스명 : 참조형 데이터 타입 (“객체”를 참조함 // 회원의 이름,주소이 1글자일수도 5글자일수도)
+	heap -> 객체를 저장(주소값) / stack(지역변수 저장)
+	객체의 주소값을 저장하는 변수 : 참조변수(reference variable)
+	메소드 안에서 사용되는 변수 : 지역변수(local variable)
+
+***제어문
+- 조건문
+	if switch
+- 제어문
+	for while do-while
+	
+	
+ @2 제어문 (조건문 : switch case) [step1]
+
+ @3 제어문 (반복문 loop : for, while, do while) [step2~5]
+
+ @4 객체 초기화 단계 [step6]
+	객체 생성시 어떤 단계를 거쳐서 초기화되는 지에 대한 정리 (이후 상속에서 추가 예정)
+	1. 인스턴스 변수의 기본 초기화 (디폴트 초기화)
+	2. 인스턴스 변수의 명시적 초기화
+	3. 생성자에 의한 초기화
+	위 3단계를 거쳐서 heap 메모리 영역에 객체의 메모리가 적재(load)된다.
+	
+ @5 변수의 종류와 범위
+	Java 변수(variable)의 종류
+	1. instance variable : 	class 레벨에서 선언하는 변수, 객체의 속성 정보를 저장
+	   (인스턴스 변수)			초기화 default->0(정수형), false(논리형), null(참조형)
+							java memory heap 영역에 저장됨.				
+	2. local variable : 메서드나 생성자 영역에서 선언되고 초기화하는 변수 
+	   (지역변수)			지역변수라고 불리고 메서드 또는 생성자에서 일시적으로 사용되는 변수
+	   					instance variable과는 다르게 사용하기 위해서는 반드시 명시적 초기화가 필요하다.
+	   					(int i; --> 선언 | int i=0; --> 선언 및 명시적 초기화) 후자대로 초기화해야 사용가능. 안쓰면 컴파일에러남.
+	   																	 즉, 선언만 해서는 사용 불가 (compile error)
+	   					local variable은 선언되고 초기화 된 자신의 실행영역 내에서만 사용할 수 있다.[step7]
+	   					java memory stack 영역에 저장됨. 
+	3. class variable (or static variavle) : 이후 공부 예정. 객체 생성 없이 클래스 로딩시에 메모리에 적재. 
+											  java memory metaspace 영역에 저장 --> 이후 공부 예정 
+
+ 
+
+
+
+
+ @6 UML (Class Diagram)
+ 	Unified Modeling Language 통합 모델링 언어 -> 분석 설계시 사용하는 모델링 언어 
+ 
+ @7 Class Diagram의 Relationship			
+ 	tool : staruml 을 설치함
+ 	
+ Class Diagram 상에서 Relationship : use a, has a, consist of
+ 
+ association : use a 예) 사람이 렌트카를 사용한다
+ 
+ aggregation : has a 예) 사람이 스마트폰을 소유해서 사용하다
+
+ composition : consist of 예) 사람이 뇌를 가지고 있다 (스마트폰보다 더 긴밀한 관계)
+ 
+ association > aggregation > composition (점차 긴밀한 관계) 
+ 
+ 
+ **4일차 주요 목차**
+ @1 Class Diagram의 relationship : aggregation, composition
+ @2 Array(배열)
+ @3 Inheritance(상속)
+
+
+			

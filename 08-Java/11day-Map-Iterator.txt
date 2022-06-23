@@ -1,0 +1,146 @@
+** 11일자 주요 목차 **
+@1 review
+@2 java.util.Iterator
+@3 java.util.Map
+@4 java.util.Stack, java.util.Queue
+
+----------------------------------
+
+
+@1 review
+# collection
+	-Set_중복인정안함
+		LinkedHashSet(입력순서보장)
+		TreeSet(정렬)
+	-List
+		ArrayList(검색에 용이)
+		LinkedList(삽입,삭제 용이)
+
+# static
+
+
+# object casting
+
+# variable
+1. instance variable
+	객체 속성 정보 저장, 클래스 레벨에서 선언, 주로 생성자 위에 위치함, heap에 저장
+2. local variable
+	메서드나 생성자 내에서 사용, 선언된 곳 안에서만 쓸 수 있음, stack에 저장
+3. class variable(static variable)
+	객체 생성 없이 사용이 가능함
+	프로그램이 딱 실행이 되면 메모리에 로딩이됨
+	붕어빵 틀의 멤버
+	meta space
+4. parameter variable
+
+# final
+	constant 상수
+	오버라이딩X
+	상속 못하게
+
+# abstract
+class 앞에 붙으면 직접 객체생성할 수 없음 (부모역할에 집중)
+method -> 하위클래스에게 구현을 강제함, 구현하지 않으면 자기도 abstract되어야함
+단일계층구조
+
+# interface
+얘들끼리는 다중상속 가능
+객체화될 수 없고
+객체의 정보를 자식에게 물려주고 이런건 없음
+“다양한 계층구조”를 생성할 수 있음 -> 다형성 향상시킴 	
+
+ # Template Method Design Pattern
+부모차원에서 가능한 것들은 다 물려주고
+알고리즘의 구조 (작업공정)까지도 다 물려줌
+부모차원(super차원)에서 구현이 불가능한 부분은 하위에서 일정부분 구현하게한다
+생산성 높아지고, 작업공정의 표준화
+ # Polymorphism
+계층구조가 생성만 되어있다면 계층구조 하에 있는
+다양한 객체를 참조할 수 있는 성질
+하나의 메시지방식으로 다양한 객체를 동작하게 할 수 있음
+
+ # Inheritance(상속)
+
+ # Encapsulation(캡슐화)
+정보를 은닉하고 정보를 보호하는 차원
+인터페이스와 구현부를 분리
+
+ # Abstraction(추상화)
+외부에 보여줄건 보여주고 감출건 감추는거
+플레이버튼만 누르면 됨
+
+ # overloading
+동일한 이름으로 다양한 매개변수
+
+ # overriding
+부모메서드 자신에 맞게 재정의
+
+@1.2 Collection API, Java Collection Framework(JCF)
+	collection계열 or API or Framework은 다양한 데이터들을 효과적으로 제어하고 관리하기 위한 프로그램의 모음
+	(library->재사용 가능한 프로그램들의 모음)
+	
+
+  # java.util.Collection interface는 Collection 계층 구조의 최상위 인터페이스이다. (기능 명세의 가장 상위)
+ 	 ("The root interface in the collection hierarchy")
+  	모든 자바 자료구조체 (ArrayList, TreeSet ..)들은 최상위 인터페이스인 Collection에서 명시한
+  	abstract method를 자신에 맞게 구현하고 있다 
+  	
+  #	collection 계열의 대표적인 인터페이스 : Set, List, Map
+  	
+  	
+  #	Generic <> : 타입을 지정 ex) LinkedHashSet<String>  set=new LinkedHashSet<String>();
+  				 데이터 타입 안정성을 보장 (ex. 문자가 들어가야하는데 숫자가 들어가면 안됨!!) 
+  				 객체 캐스팅 절차를 감소할 수 있음
+  				 
+  # Set	
+  		Set계열 : 데이터 중복 인정 x, 즉 set계열의 자료구조체는 요소로 동일한 데이터를 중복해서 저장하지 않는다
+  		Set 계열의 class : 	LinkedHashSet(중복인정X, 등록된 순서를 보장)
+  							TreeSet(중복인정x, 정렬기능 내장)
+ 
+  # List
+  		List 계열 : 인덱스(순번)로 관리
+  		List 계열의 class : 	ArrayList (인덱스로 관리, 검색에 용이)
+  							LinkedList(인덱스로 관리, 추가/삭제에 용이)
+  							
+  							
+  							
+  							
+@2 java.util.Iterator Interface [step1]
+	: 사전적 의미 - 반복자
+	Collection 계열의 자료 구조체들이 하나의 단일한 방식으로 자신의 요소를 반복 열거할 수 있는 
+	방법을 제공하는 인터페이스
+	주요 abstract method
+	hasNext() : boolean 다음 요소가 있으면 true / 없으면 false
+	next(): Element 다음 요소를 리턴한다 
+	
+	ex) Iterator it=set.iterator();
+		while(it.hasNext()){ //다음 요소가 있으면 true, 없으면 false
+			sysout(it.next()); //다음 요소를 반환
+		}
+
+
+@3 java.util.Map
+	Map 계열 : key와  value 쌍으로 저장
+	key를 이용한 제어 (등록, 검색, 삭제, 수정이 가능)
+	
+	LinkedHashMap class: 입력 순서를 보장
+	TreeMap class: 정렬 기능을 내장
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@4 java.util.Stack, java.util.Queue
+  	

@@ -1,0 +1,36 @@
+- Java SE 기본 환경 설정 
+jdk 1.8 다운로드 후 설치 
+https://www.oracle.com/java/technologies/downloads/#java8-windows
+jdk-8u321-windows-x64.exe 파일을 다운로드 받는다 
+( 참고로 다운로드 받기 위해서는 오라클 회원 가입이 필요하다 )
+--> cafe.naver.com/kosta238에서 바로 받을 수 있음
+
+jdk 설치 후 내 컴퓨터에 jdk 환경 변수를 추가해서 dos(실행창) 상에서 자바를 
+컴파일하고 실행할 수 있도록 설정을 추가한다 
+탐색기 열어서 내 pc 에서 오른쪽 마우스 클릭 -> 속성 -> 고급 시스템 설정 -> 
+환경변수 -> path 를 더블 클릭 -> 새로 만들기 
+-> C:\Program Files\Java\jdk1.8.0_321\bin	
+
+실행창에서 cmd 입력 후 도스 실행창을 열어 javac (컴파일 명령어 ) , java (실행 명령어 )
+를 입력해 옵션이 나오면 잘 설정 된 것이다. 
+
+
+
+통합 개발 환경(Integrated Development Environment, IDE) 설치 및 설정 
+eclipse download -> 
+https://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/2021-12/R/eclipse-jee-2021-12-R-win32-x86_64.zip
+exe 버전 파일이 아니라 zip 파일 버전으로 다운로드 받는다 
+--> cafe.naver.com/kosta2022에서 바로 받을 수 있음
+
+-> 압축 해제 후 eclipse.exe를 실행하면 된다 
+
+eclipse 실행 후 최초로 workspace 를 생성 ( C:\kosta238\basic-workspace ) 
+eclipse에서 사용할 jdk를 설정 
+0. 자바 컴파일러 설정:
+    이클립스 상단부 메뉴  window -> preferences -> java -> Compiler 를 1.8로 설정하면 됨
+
+1. JRE설정
+    이클립스 상단부 메뉴 window -> preferences -> java -> installes JRE 
+	-> add -> C:\Program Files\Java\jdk1.8.0_321 -> apply -> 트리 하단부에
+	execution environments 클릭 후 jdk 1.8 check하면 된다 
+

@@ -1,0 +1,140 @@
+**Network**
+
+Java 기반의 TCP/IP 네트워크 프로그래밍 
+
+주요 클래스 :  java.net.ServerSocket , java.net.Socket 
+
+Protocol : 프로토콜 , 약속 , 통신규약 
+
+TCP/IP : 인터넷 통신 규약 
+TCP : Transmission Control Protocol  전송 제어 프로토콜 -> 데이터 전달을 보증
+IP : Internet Protocol    ip address -> 127.0.0.1 ( 자신의 컴퓨터 ip ) 
+	  DNS ( Domain Name System ) -> www.naver.com  사용자들이 ip를 기억하기 어려우므로 ip 와 연결된 Domain Name을 이용 	
+
+Port : 가상의 연결단위 , 사전적 의미는 입구 , 서버의 서비스 번호  	
+		->  http://127.0.0.1:8888
+			protocol   ip       port 
+			
+Socket : 네트워크 연결의 양끝단위( end-point )로서 통신을 위한 인터페이스를 의미한다 ( 예 - 전화기 ) 
+		  -> client
+		  	  Socket socket=new Socket(server ip, port ); 
+		  	  //입력
+		  	  socket.getInputStream();
+		  	  //출력
+		  	  socket.getOutputStream(); 	
+			
+ServerSocket : 통신 서버를 구현하기 위한 객체 ( 예 - 회사의 대표전화 ) 
+			  -> server
+			  ServerSocket serverSocket=new ServerSocket(port);
+			  // 대기하다가 클라이언트가 접속하면 실행된다, 개별 클라이언트와 통신하기 위한 Socket 객체를 반환한다 
+			  Socket socket=serverSocket.accept();			
+			  //반환받은 개별 소켓이 실제 클라이언트 통신하는 객체다 
+			  //출력
+			  socket.getOutputStream();
+			  //입력
+			  socket.getInputStream();
+			
+	step1
+	서버는 클라이언트의 접속을 대기하다가 클라이언트가 접속하면 
+	서버는 메세지를 클라이언트에 출력하고 클라이언트는 메세지를 입력받아 화면에 출력하고
+	서버와 클라이언트가 모두 종료되는 프로그램 
+	
+	Server														Client
+	-----														------
+	ServerSocket(port) 생성						
+	Socket socket=serverSocket.accept(); 					Socket socket=new Socket(serverIp,port);
+	socket.getOutputStream(); 				------>		socket.getInputStream();				
+	close()														close()
+			
+	step2		
+	서버는 다수의 클라이언트에게 메세지 서비스 할 수 있도록 step1의 서버를 업데이트한다 
+	클라이언트는 step1과 동일하다
+	
+	Server 
+	------
+	ServerSocket(port) 생성 
+	while(true){
+		Socket socket=serverSocket.accept();
+		socket.getOutputStream(); 
+		socket.close();
+	}		
+			
+   step3 
+   step2의 역할을 바꿔본다 
+   NetServer3 은 NetClient3이 보낸 메세지를 입력받아 자신의 콘솔에 출력한다 
+   NetClient3은 NetServer3으로 접속해서 메세지를 출력한다 
+
+   step4
+   step3 의 NetServer 는 변화 없이  NetClient를 업데이트 
+   step4의 NetClient는 사용자가 콘솔에서 메세지를 입력하고 엔터를 누르면 그 메세지가 
+   서버로 출력되는 기능을 추가한다 
+   
+   step5
+   EchoServer 와 EchoClient -> 1 대 1 지속적 통신 
+   
+   EchoClient가 EchoServer에 접속하여 메세지를 서버로 출력하면
+   EchoServer는 그 메세지를 입력받아 자신의 콘솔에 출력하고
+   다시 그 메세지를 EchoClient에게 출력하는 프로그램 
+   
+   EchoServer			EchoClient
+   				<---- 안녕
+   				----> 안녕 *server*
+   				<---- 불금
+   				----->불금 *server*		
+				<---- exit
+	종료				종료 
+	
+	1대1 지속적 통신이므로 ServerSocket의 accept() 는 한번만 실행되는 구조 -> 반복문을 사용하지 않는다 
+	
+	EchoServer에 필요한 구성요소 
+	ServerSocket : accept() 
+	Socket 
+	//클라이언트로부터 입력받는 스트림
+	BufferedReader>InputStreamReader>socket.getInputStream()
+	//클라이언트로 출력하는 스트림 
+	PrintWriter>socket.getOutputStream()
+	
+	EchoClient에 필요한 구성요소 
+	Socket
+	//콘솔에서 입력받는 스캐너
+	Scanner
+	//서버로 출력하는 스트림
+	PrintWriter>socket.getOutputStream()
+	//서버에서 입력받는 스트림
+	BufferedReader>InputStreamReader>socket.getInputStream()
+
+	step6
+	다수의 클라이언트에게 메아리 서비스하는 서버를 구현 
+	서버 : step6.MultiServer - ServerWorker 
+	클라이언트 : step5의 EchoClient와 동일 
+	
+	하나의 서버가 지속적으로 접속을 유지하면서 다수의 클라이언트에게 서비스 하기 위해서는
+	프로세스 내부의 실행단위인 Thread를 이용해야 한다 ( 멀티 스레딩 ) 
+	( 예 - 콜센터에서 다수의 고객과 상담서비스를 진행하기 위해서는 다수의 직원이 필요하다 ) 
+	
+	MultiServer 는 클라이언트의 접속을 대기하다가 클라이언트가 접속하면 소켓을 반환,
+	ServerWorker(socket)를 이용해 Thread 를 생성하고 start() 시킨다
+	이러한 작업을 클라이언트 접속시마다 반복 
+	
+	ServerWorker 는 실제 개별 클라이언트와 통신하는 클래스 ( 메아리 서비스 )
+	할당받은 소켓을 이용해 run() 메서드에서 클라이언트의 메세지를 입력받고 다시 출력하는 작업을 반복 
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  

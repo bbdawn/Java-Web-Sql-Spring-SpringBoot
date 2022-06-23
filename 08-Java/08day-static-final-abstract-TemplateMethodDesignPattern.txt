@@ -1,0 +1,149 @@
+**8일차 주요목차**
+@1 	review
+@2	static
+@3	final
+@4	abstract, Template Method Design Pattern
+@5 	java.lang.String
+
+------------------
+
+@1 	review
+	#상속(inheritance)
+	부모 멤버(인스턴스변수, 메서드)를 물려받아 재사용
+	계층구조 형성, 다형성
+	extends 
+	UML / relation / generalization
+	super / this
+	object / toString()
+	
+	#overloading 메서드명 생성자명 동일. 매개변수만 다르면 됨 / 같은 메서드,생성자로 “다양한 매개변수”
+	#overriding 부모 멤버를 상속받아 자신에 맞게 재정의
+	
+	#Polymorphism 다형성
+	다양한 형태를 가지는 성질 
+	하나의 참조변수가 다양한 객체를 참조할 수 있다
+	A rv=new B();
+	-> 자식의 독자적인 영역에는 바로 접근할 수 없다 (compile error)
+	rv가 부모타입이므로 자식의 독자적 멤버에 접근하기 위해서는 Object (down) Casting이 필요하다
+	((B)rv).b();
+	instanceof 객체타입을 비교하는 연산자 true/false 
+
+	#Encapsulation 캡슐화
+
+
+
+@2	static
+ # static : class의 member(attribute, method) 
+ 	1.변수,메서드 앞에 명시 
+ 	2.class의 member 
+ 	3.별도의 객체 생성 없이 실행시 첫번째 단계인 class loading 시점에 단 한번 하나의 공간에 메모리 적재 (meta space 영역에 적재 /stack,heap 아님!)
+ 		(+object member : heap 메모리 영역에 각각 객체로 저장 <- new 생성자 실행시)
+
+ 		클래스 내의 static으로 선언된 변수와 메서드 외부에서 접근할 때는
+ 		클래스명.member(변수 또는 메서드)로 접근한다 (new 생성과정 필요없음)
+
+ 	ex) 붕어빵틀(class) 붕어빵(object or instance)
+ 		static은 붕어빵이 아니라 붕어빵틀 차원의 member를 말한다. 
+ 
+ #	Java Memory
+	Stack 영역 : local variable의 정보가 저장되는 영역
+	Heap 영역 : Object instance variable 정보가 저장되는 영역
+	Meta Space 영역 : class의 meta data(package, class, constructor, method..)가 저장되는 영역
+					  이곳에 static member 정보가 저장된다!!
+					  
+ # Java Programming 실행단계
+ 	1. 컴파일(compile) -> .class 실행
+ 	2. Class Loader가 Class Loading -> meta space에 class meta data를 메모리에 적재
+										이때 static member 정보도 함께 적재	
+	3. Class 검증단계
+	4. 실행(runtime) -> main 실행, 필요시 동적으로 객체를 생성 -> 	stack에는 local variable, 
+																heap에는 객체정보(instance variable)
+
+ # static과 non-static 접근
+ 	non-static 			static
+ 				------->
+ 				직접 접근 가능
+ 				
+ 				<------
+ 				직접 접근 불가, 접근 위해서는 객체생성을 필요로한다
+
+@3	final
+	참고) field : 변수(variable)와 상수(constant)
+	
+ #	field 상수 : 한번 할당되면 재할당 불가(변하지 않음), 상수명은 대문자로 구성되고 합성어는 _ underscore로 연결
+	ex) private final ADMIN_ID="javaking"
+ 	
+ #	final 메서드 : 자식 클래스에서 오버라이딩 불가(재정의 불가)
+ 	
+ #	final 클래스 : subclassing 불가 (자식 클래스 생성불가, 상속불가)			
+ 
+ 
+ @4	abstract, Template Method Design Pattern
+ 	: 추상 클래스 또는 추상 메서드를 선언할 때 사용하는 자바 키워드
+ 	
+ # 특징
+ 	1. abstract class : 추상클래스, 부모 역할에 집중 [Step3-TestAbstract1] 
+ 									-> 직접 객체화 될 수 없다 (new로 생성 불가) 단 자식클래스를  통해 super()로 생성은 된다
+ 	2. abstract method : 자식(하위) 클래스에게 구현을 강제 
+							[	부모차원에서는 구현할 수 없는 기능이지만,
+								자식 차원에서 반드시 기능구현을 강제하고 싶을 때 abstract method를 사용한다 
+								ex) "부모(abstract): 내가 부모차원에서 해줄 수 있는 건 해주는데 공부는 해줄 수가 없어 공부는 너가 해야해" 
+ 									이 부모의 자식은 무!조!건! 공부를 하게 되어있음 (안그러면 객체를 만들 수가 없음) ]
+ 						 abstract method는 구현부가 없다 ex) public void study(); --> {}와같은 구현부가 없다
+ 						 위 abstract method가 선언되면 해당 클래스는 반드시 abstract class로 선언되어야한다. 
+ 						 자식 클래스는 반드시 해당 abstract 메서드를 구현하거나 자신도 abstract class로 선언되어야한다. 
+ 						 
+  @5 Design Pattern : 소프트웨어 설계 패턴 [step5]
+  						소프트웨어 설계 단계에서 공통적으로 발생하는 문제에 대한 재사용 가능한 해결방안
+  						-> 소프트웨어 설계 패턴
+  	Template Method Design Pattern : 부모클래스에서 알고리즘 구조를 정의해 자식이 재사용하게하는 설계 패턴
+  									 부모클래스 차원에서 작업공정(알고리즘구조,알고리즘의 뼈대)을 정의해 자식에게 물려주고 (정의 가능한 모든 기능은 자식에게 물려주고)
+  									 자식차원에서 필요시 기능을 추가구현하는 방식
+  									 작업공정 정의 -> Template Method				
+  									 template method design pattern을 적용하면 
+  									 부모로부터 멤버를 물려받아 자식은 개발의 생산성을 높이고
+  									 Template Method(작업공정)을 부모에서 정의하여 물려줌으로써 
+  									 시스템 작업공정의 표준화에 기여한다. 
+  									 
+  									 
+  									 		 
+  	ex) 피자 서비스에서 도우() 토핑() 굽다() 커팅() 포장()과 같은 기능을 정의
+  		이 때 자식의 구체적인 피자서비스(예-감자피자, 해산물피자)에서 "토핑"을 각자 구현해야하므로
+  		abstract로 토핑을 선언하여 자식에게 구현을 강제
+  		추가적으로 피자요리에 대한 공정을 정의한 makePizza() -> template method를 정의해 물려주어 
+  		자식클래스는 abstract 토핑 메서드만 구현하면 되도록 설계한다 
+  		사용자측에서는 개별피자가 어떤것이든 관계없이 template method인 makePizza()만 호출하면
+  		손쉽게 피자를 만들 수 있도록 한다. 
+ 	
+ 	
+@5 	java.lang.String
+ 	: 문자열 비교시에는 ==이 아니라 String class의 equals 메서드를 이용해야 정확하게 비교가 된다
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 										
+ 				
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 
+ 
+	
+ 		

@@ -1,0 +1,146 @@
+**9일차 주요 목차**
+@1 review 
+@2 interface
+@3 java.util.Collection : Set, List
+-------------------
+
+@1 review 
+ # 상속 Inheritance
+	부모 멤버 물려받는 것
+	장점1. 재사용성 높아짐
+	장점2. 계층구조 형성을 통한 다형성 적용환경을 제공함 
+	extends
+	UML relation 	generalization
+	java.lang.Object		toString()
+	overloading
+	overriding
+
+ # 다형성 Polymorphism
+	하나의 메시지 소통방식으로 다양한 객체들이 각자의 방식으로 다양하게 동작
+	   ----> ex) make Pizza 하나만 클릭하면 해산물/페퍼로니/감자 피자가 만들어지게!
+	object down casting
+
+ # static 	객체 생성 없이 클래스명으로 접근 가능 
+	class loading
+	metaspace
+
+ # final	상수 constant
+	메서드 오버라이딩 X
+ 	상수 X	
+
+ # abstract	new X
+		직업객체화 X
+		자식차원에게 구현을 강제
+
+ # template method design pattern
+		 
+
+@2 interface
+ # 다양한 계층 구조 형성을 통한 다형성 지원이 목적 -> 장점 : 다향성을 다양하게 적용할 수 있다
+   	---> 자바는 단일상속이므로 단일한 계층구조를 가지는데
+   		 인터페이스를 이용하면 다양한 계층구조를 가질 수 있다 
+   		 -> 계층 구조를 형성하면 다형성을 적용할 수 있다
+   		 	-> 다형성을 적용하면 하나의 소통방식으로 다양한 객체를 제어할 수 있다
+   		 		(다형성이란 하나의 소통방식으로 다양한 객체를 각자의 형식으로 다양하게 동작하게 할 수 있다)   
+ 	자바 인터페이스는 다중 상속의 효과를 가진다 (다중상속효과란 다양한 계층구조형성을 지원)
+ 	
+	재사용성은 없다. 재사용성은 상속을 통해서 함. 
+	
+	인터페이스는 서비스를 구현한 측과 서비스를 사용하는 측과의 약속 (소통방식) 
+	현대차, 기아차, 전기차 모두 운전방법만 알면 사용할 수 있음. 
+	인터페이스를 이용하면 서비스를 사용하는 측에서는 다양한 구현체들의 구현내용을 몰라도 인터페이스만 이해하면 사용할 수 있다 (ex-API)
+	서비스를 제공하면 구현체의 구현내용이 업데이트되어도 "인터페이스는 그대로이므로" 
+	사용하는 측에서는 기존의 사용법대로 계속 사용할 수 있다 -> 결합도가 낮아진다. -> 유지보수성을 향상시킨다
+	                                                     (참고.결합도 : 모듈간의 의존도)
+	 
+	일반적으로 인터페이스는 public static final 상수와 public abstract method 추상메서드를 가진다 
+	예외적으로 static method, default method를 가질 수 있다
+	인터페이스는 직접 객체화 될 수 없고 abstract class와는 다르게 
+	객체의 멤버 즉 인스턴스 변수와 구현된 메서드를 가질 수 없다 (static, default method 제외) -> 상속의 재사용성은 없다. 
+	
+	
+	UML의 Class Diagram의 relation은 realization으로 표현된다. 
+	
+  - 객체지향의 중요개념 : Encapsulation, Inheritance, Polymorphism, Abstraction
+							캡슐화			상속			다형성			추상화
+	Abstract 개념 : 필수 요소만 공개하고 불 필요한 요소는 숨긴다
+					사용하는 측에게 꼭 필요한 요소를 공개하되, 불 필요한 세부요소는 공개하지 않는다는 개념
+					-> ex)  1. 세부적인 해산물 피자, 감자피자 등은 숨기고 
+							오로지 makePizz()를 표현하는 피자 서비스만 공개한다
+							2. Flyer interface의 fly()요소는 공개하고
+							세부적인 비행기, 새의 요소를 고액하지 않는다. 
+							3. 구글맵의 세부 구현 요소는 숨기고
+							맵서비스를 사용하기 위한 방법만 공개한다 (Google Map API_ApplicationProgrammingInterface)
+	ex) public interface Flyer{
+			String ID="javaking"; //public static final이 자동으로 인식(meta space에 저장되는 재할당 불가능한 상수)
+			public void fly(); // 자동으로 abstract method로 인식
+		}
+	    -------------
+	    public class Bird extends Animal implements Flyer{ //implements 인터페이스, 인터페이스, 인터페이스 -> 다중 구현 가능 (여기에 상속이라는 표현은 잘 안씀)
+	    	//상위 인터페이스의 abstract method를 반드시 구현해야한다. 구현하지 않으면 자신의 class가 abstract로 선언되어야한다
+	    	public void fly(){
+	    	//새가 날다
+	    	}
+	    }
+	    
+	    
+ # interface 특징
+	class는 다중상속이 안되지만, interface끼리는 다중상속이 가능 (abstract method를 상속함)
+	하나의 클래스에서 다양한 interface를 implements 할 수 있다 (ex- class SuperMan extends ET implements Flyer, Fighter)
+	interface는 직접 객체화될 수 없고 instance variable을 불가능, 오직 static final 상수와 abstract method 그리고
+	jdk1.8이상 버전에서 지원하는 default method와 static method,private method(jdk1.9이상가능)만 가능하다 
+	
+	
+ # ********	abstract와 					interface를 비교	****** 
+	
+	공통점 	직접 객체화 불가
+			abstract method를 통한 하위 클래스에 구현을 강제
+	
+	차이점	단일계층구조					다양한 계층구조
+			instance 변수 쓸 수 있음   instance 변수 쓸 수 없음
+			구현된 메서드0				구현된 메서드x(default, static method 예외,, jdk1.9이상에서는 private method 허용)
+	
+	==> 인터페이스는 다양한 계층구조 형성이 가능하고
+		abstract class는 부모멤버를 물려줄 수 있으므로 
+		상호 보완적으로 사용될 수 있다.
+		주로 interface를 최상위 계층구조(가장 높은 추상화레벨)로 두고 그 아래에 abstract class(재사용성부여)를 배치해서 설계한다
+
+
+
+
+@3 Collection API, Java Collection Framework(JCF)
+	collection계열 or API or Framework은 다양한 데이터들을 효과적으로 제어하고 관리하기 위한 프로그램의 모음
+	(library->재사용 가능한 프로그램들의 모음)
+	
+
+   java.util.Collection interface는 Collection 계층 구조의 최상위 인터페이스이다. (기능 명세의 가장 상위)
+ 	 ("The root interface in the collection hierarchy")
+  	모든 자바 자료구조체 (ArrayList, TreeSet ..)들은 최상위 인터페이스인 Collection에서 명시한
+  	abstract method를 자신에 맞게 구현하고 있다 
+  	
+  	collection 계열의 대표적인 인터페이스 : Set, List, Map
+  	- Set	
+  		데이터 중복 인정 x, 즉 set계열의 자료구조체는 요소로 동일한 데이터를 중복해서 저장하지 않는다
+  		set 계열의 class : 	LinkedHashSet(중복인정X, 등록된 순서를 보장)
+  							TreeSet(중복인정x, 정렬기능 내장)
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

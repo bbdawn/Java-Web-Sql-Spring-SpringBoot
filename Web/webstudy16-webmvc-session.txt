@@ -1,0 +1,66 @@
+ **webstudy16-webmvc-session**
+  
+  Session : 사용자 상태 정보를 서버 측에 저장 
+  
+  세션 유효 조건  
+  1) 서버에 설정한 session timeout 시간 내에 재접속이 없을 경우 세션 해제
+  2) 브라우저를 끌 경우 세션 해제 
+  3) 명시적으로 로그아웃 할 경우 세션 해제( session.invalidate() 를 통해 세션을 무효화 시킬 때 ) 
+  
+  - jsp 상에서 세션 이용 		   
+    :  jsp 는 기본적으로 session 을 사용할 수 있다 
+       web container에 의해 jsp 가 java class로 생성될 때 session 변수에 getSession() 메서드를 이용해 
+       세션 객체를 할당하는 코드가 기본적으로 정의되어 있다 ( apache-tomcat\work 아래에서 확인 ) 
+       참고) getSession() 메서드는 기존 세션이 없으면 새로 생성 , 기존 세션이 있으면 기존 세션을 반환한다  
+  		    
+  - jsp 에서 지원하는 객체 ( jsp 내장 객체 ) 
+     request : HttpServletRequest
+     response : HtttpServletResponse 
+     config : ServletConfig 
+     session : HttpSession
+     application : ServletContext 
+     
+     내장 객체의 정보 공유 범위 
+     request < session < application(ServletContext) 
+     
+     request : response  하기 전까지 유효 
+     session : 위의 세션 유효 조건시까지 ( time-out 전까지 재접속이 없을 경우 , 브라우저 끌 경우 , invalidate() 전까지 ) 
+     application : 즉 ServletContext 는 해당 web application 종료 전까지 유효 
+ 				
+	- web mvc 에서 Controller(Servlet) 과 View(JSP) 에서 세션 사용의 예 
+	
+	mvc-login.jsp --request--> LoginServlet
+										|
+										| 아이디와 패스워드가 일치하면 로그인 성공 아니면 실패 
+										| 로그인 성공시에는 세션을 얻어와 회원인증객체 정보를 할당 -> login-ok.jsp 
+										| 로그인 실패시에는 -> login-fail.jsp 				
+										| redirect 방식을 이용 ( 재동작 방지 , request가 아니라 session에 정보 공유 ) 
+				 				   		|
+				 				   	login-fail.jsp : 로그인 되지 않았습니다 
+				 				   	 or
+				 				   	login-ok.jsp : 아이유님 로그인 되었습니다  	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		 			

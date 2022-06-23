@@ -1,0 +1,28 @@
+**Java Script**
+
+HTML : 웹 문서의 컨텐츠를 담당
+CSS : 웹 문서의 디자인 스타일을 담당
+JavaScript : 웹 문서의 행위를 담당
+			ECMAScript 표준을 준수하는 스크립트 언어
+			ECMAScript란 다양한 브라우저에서 일관성 있는 동작을 위한 스크립트 표준을 말한다
+			ECMA 인터네셔널 : 정보 통신 표준을 제정화하는 표준화 기구
+			(이크마)
+			
+ES5(ECMA5, 2009) : 변수 선언 var -> 중복 선언 가능 (Function-level scope)
+ES6(ECMA6, 2015) : 변수 선언 추가 let -> 중복 선언 불가 (Block-level scope)
+
+DOM(Document Object Model) : javascript에서 html(web)문서를 제어하기 위한 프로그래밍 인터페이스
+							 웹 브라우저에서 지원, HTML 문서 요소를 계층적으로 표현. 
+							 각 요소를 자바스크립트에서 제어,조작하기 위한 방법을 제공
+
+
+
+
+
+
+
+
+
+
+
+

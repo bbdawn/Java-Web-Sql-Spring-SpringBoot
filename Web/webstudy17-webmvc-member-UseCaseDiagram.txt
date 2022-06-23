@@ -1,0 +1,227 @@
+**webstudy17-webmvc-member-UseCaseDiagram**
+
+UML : Unified Modeling Language -> application 분석 설계 
+
+​UseCase Diagram : 요구분석을 위한 UML , 시스템에 요구되는 기능을 사용자 관점에서 나타낸 다이어그램 
+
+​Use Case : 사용자 관점의 기능 단위 ( 서비스 단위 ) ( ex - 도서검색 , 도서대여 , 로그인 ) 
+
+Actor : 시스템 외부에 존재하면서 시스템과 상호작용하는 개체 ( ex - 고객, 관리자 ) 
+
+​<<include>>
+기본 Use Case가 실행되기 위해서는 반드시 다른 특정 Use Case의 행위를 포함해야 한다는 것을 의미 
+
+ex) 책대여Use Case -------> 회원인증Use Case 
+
+​
+<<extend>>
+Use Case 가 특정 Use Case 에 정의된 행위로 선택적으로 추가 확장 될 수 있다는 것을 나타냄 
+
+ex) 책대여Use Case <------ 부록CD 대여 Use Case 
+
+Generalization 
+기능의 추가 관계가 아니라 개념의 일반화로 봐야 한다 
+
+ex) 도서 검색 Use Case 은 신착도서검색 Use Case , 간행물검색 Use Case 의 일반화된 Use Case 이다 
+
+
+UseCase Diagram 
+- 요구사항 
+비로그인 상태에서 회원 아이디로 회원 정보를 검색할 수 있다 ( 아이디에 따른 회원명, 주소 ) 
+비로그인 상태에서 회원 가입이 가능하다 
+회원가입시에는 반드시 아이디 중복확인 과정을 거쳐서 중복된 아이디가 아닐 때 회원가입이 되도록 한다 
+선택적으로 고객이 원한다면 자신의 프로필 이미지를 업로드 할 수 있도록 한다 
+
+회원 일 경우에는 로그인, 로그아웃이 가능하다 
+회원은 주소로 다른 회원의 정보를 검색할 수 있다 
+회원은 자신의 회원정보를 수정할 수 있다 ( 아이디를 제외한 비밀번호, 이름 , 주소를 수정할 수 있음 ) 
+
+- 회원관리 시스템구축
+0. 아이템 기획 - 프로젝트 목표 , 시스템 개요 , 개발방법론,  팀빌딩 , 프로젝트 일정 
+1. 요구분석 - UML의 UseCase Diagram 
+2. 설계 - UML의 Class Diagram , ERD , UI 설계 
+3. 구현 - UseCase 별 업무분장 , UseCase 별 구현순서 
+		   형상관리 , 이슈관리 
+
+1차 개발 -> 2차 개발 -> 3차 개발 -> 완료 
+ 
+업무별 구현 순서 
+아이디로 회원검색 -> 로그인, 로그아웃 -> 주소로 회원검색 -> 회원정보수정 -> 회원가입 및 아이디 중복확인 
+
+1. 아이디로 회원검색 
+
+index.jsp  --- FindMemberByIdServlet --- MemberDAO ------ DB 
+						|
+						| forward 				  findMemberById(id) : MemberVO 
+						| 
+					findbyid-ok.jsp : 회원정보를 보여준다 ( 아이디, 이름 ,주소 ) 
+					or
+					findbyid-fail.jsp : 아이디에 회원정보가 존재하지 않습니다 	
+
+
+
+2. 로그인, 로그아웃
+1) 로그인
+	
+	index.jsp --- LoginServlet  ---  MemberDAO ----------------------  DB
+		|							login(id,password) : MemberVO
+						|
+						| Model 연동 후 
+						| 로그인 성공하면 session에 회원 객체를 저장 (name : mvo)한 후 
+						| index.jsp로 redirect한다
+						| index.jsp에서는 로그인 폼 대신 아이유님 아래 라인에 로그아웃 링크를 준다
+						| 
+						| 로그인 실패하면 login-fail.jsp에서 alert()로 로그인 실패 후 index.jsp로 redirect한다
+						
+	구현순서 : SQL -> Model(MemverDAO) -> Controller(LoginServlet - doPost) -> View(index.jsp)
+						
+	http request method : post, 제어 이동방식 : redirect, 정보공유 : session
+						
+
+2) 로그아웃
+	index.jsp --- LoginServlet
+						|
+						| 세션 무효화
+						|
+						| redirect
+					index.jsp
+					
+	url상에서 LogoutServlet을 명시해서 request를 했을 때 로그아웃이 되는 것은 바람직하지 ㅇ낳다
+	-> 로그아웃 요청을 get방식에서 post방식으로 변경한다 -> javascript를 이용한다
+	
+	로그인, 로그아웃 request method는 post 방식을 권장한다
+					
+	구현순서 : Controller(LogoutServlet - doGet->doPost)	
+				session.invalidate();
+				
+Http Response status code(응답상태코드)
+200 - 정상수행
+404 - not found, action과 url-pattern, file명 확인
+405 - method 지원하지 않음 (request method : get, post와 Controller의 doGet(), doPost()를 확인)
+500 - 서버오류 (Exception, 콘솔 메세지를 확인해서 코드 수정)							
+					
+
+3. 주소로 회원검색
+	index.jsp   ------- FindMemberListByAddressServlet --- MemberDAO ------------------------------------------  DB
+	주소 입력받아 전송 				|
+								|						findMemberListByAddress(address):ArrayList<MemberVO>
+								| request에 list를 저장
+								| forward방식으로 이동(request를 유지해야하니까)				
+								|
+						findbyaddress-result.jsp
+
+						아이유님  종로에 사는 회원리스트입니다
+						
+						종로에 사는 회원의 아이디와 이름을 테이블 형식으로 제공한다
+
+
+
+	구현 순서 : sql-dao-servlet-view
+
+
+
+
+4. 회원정보수정
+
+	index.jsp   --- update-form.jsp  ----------------------UpdatdMemberServlet ------ MemberDAO ------------------ Database
+					아이디를 제외한														    updateMember(MemberVO)
+					패스워드										|
+																| db 및 session 회원정보수정
+					이름											| redirect
+					주소를 제공(세션의 회원 객체를 이용)					update-result.jsp(수정된 회원정보 제공 : session의 회원정보를 이용)
+					
+					id test 요소 : readonly속성  -> 읽기전용
+					나머지는 수정가능
+					
+					post방식 요청
+
+
+	구현 순서 : sql-dao-servlet-view
+
+
+
+4.1 회원정보수정 코드 개선
+	문제점 : index.jsp에서 회원정보수정폼 즉 update-form.jsp로 이동시 만약 index.jsp에서 세션타임아웃이 되어있는 상태로 클릭하게 되면
+			세션이 해제되어있으므로 NullPointerException이 발생 -> 이슈관리대장에 등록, 개선점을 정리 -> 이슈관리를 명세화
+			
+	개선점 : index.jsp의 회원수정폼 링크 ------> UpdateFormServlet
+												 |
+												 | Session 및 인증정보를 체크
+												 |
+												 | redirect
+												 |
+											  update-form.jsp(로그인상태)
+											 	or
+											  index.jsp(비로그인상태)
+
+
+
+4.2 회원정보수정폼 인증체크 코드 개선
+	이슈사항 : update-form 화면 상에서 세션 타임아웃 상태에서 수정하기 버튼을 눌렀을 때 세션이 해제되어있으므로 
+			NullPointerException이 발생하게됨
+	개선방안 : UpdateMemberServlet에서 세션 및 인증 정보를 체크해서 비로그인 상태이면 index.jsp로 redirect시킨다
+	
+
+
+
+
+
+5. 회원가입
+
+	index.jsp   --- register-form.jsp ------RegisterMemberServlet --- MemberDAO   ---------- Database
+					회원가입폼을 제공										register(MemberVO)
+													|
+													|redirect
+												register-result.jsp
+
+
+6. 아이디 중복확인
+
+별도의 프로젝트 webstudy18에서 html의 hidden과 javascript popup을 단위테스트(연습)
+
+	index.jsp --- register-form.jsp --- 중복확인버튼 클릭 --- CheckIdServlet --- MemberDAO 
+																			checkId(id) : boolean(존재하면 true, 존재하지 않으면 false)
+																|									사용불가		사용가능
+																| forward
+																|
+																| 
+															true : 사용불가 -> check-id-fail.jsp(팝업) -> 본창의 id text 지우고 포커스를 준다
+															false : 사용가능 -> check-id-ok.jsp(팝업) -> 본창의 hidden checkFlag에 인증한 아이디를 할당한다				
+																					
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		 			

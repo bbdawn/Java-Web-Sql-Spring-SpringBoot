@@ -1,0 +1,82 @@
+**webstudy05-Servlet-기본개념**
+
+HTTP : HyperText Transfer Protocol 
+
+Web Server : HTTP 에 의거해 HTML ( css , javascript 포함 ) 을 서비스하는 서버 
+				웹 브라우저 클라이언트로부터 HTTP Request를 받아 정적인 컨텐트를 서비스하는 서버 
+				
+WAS : Web Application Server ( Web Server + Web Container ) 
+		 데이터베이스 연동 및 타 서버와의 연동 , 다양한 로직을 처리하는 동적인 컨텐트를 제공하기 위해 	만들어진 Application Server 	
+		 
+		 Web Container -> 서버 사이드에서 Servlet/JSP 의 실행환경을 제공 
+		 
+우리는 WAS 제품군 중에 Apache Tomcat을 사용한다 
+
+Java Web Programming 환경 설정 
+0. WAS 설치 
+1. 포트 설정 : apache tomcat/conf/server.xml 에서 port 를 변경 ( 이유는 오라클 db와의 포트 충돌을 방지하기 위해 ) 
+2. get 방식 한글처리 : apache tomcat/conf/server.xml 에서 URIEncoding="utf-8" 로 설정 
+3. class 자동 리로드 설정 : apache tomcat/conf/context.xml 에서 reloadable="true" 설정 추가 
+							 Servlet 을 포함한 java class가 변경될 때 서버에 자동 리로드되도록 설정 
+							 
+Client Side : HTML ( web document 의 content 담당 ) , css ( 디자인 스타일 담당 ) , javascript ( 행위 behavior 를 담당 ) 
+
+Server Side : Servlet , JSP 
+
+Servlet : Java Web Programming의 기반 기술 
+		   Java Class 로 개발 
+		   Model2 MVC 의 Controller 역할을 담당 		
+		   
+JSP : 	Java Server Page 
+		동적인 웹페이지를 개발하기 위한 기술 -> Template Engine 	 
+		HTML 구조 상에서 jsp tag 이용해 java code 를 삽입 
+		Model2 MVC 의 View 역할을 담당 					 
+
+ Web MVC (or Model2 MVC ) -> 이후 공부예정 
+ -> Model : 비즈니스 로직과 데이터 액세스 로직을 담당 ( VO, DAO , Service ..와 같은 java component가 담당 ) 
+     View : 클라이언트에게 동적인 화면을 제공 ( JSP 가 담당 ) 
+     Controller : 제어자의 역할 , 클라이언트의 요청을 분석, Model과 연동하여 적절한 View를 선택해서 응답하게 하는 역할 
+     			  ( Servlet 이 담당 ) 
+     			  
+     			  
+Servlet Annotation : 서블릿 3.0 이상에서 지원 
+					   @WebServlet( url-pattern ) -> url pattern : 클라이언트가 해당 서블릿에 요청하기 위한 url 이 된다 
+					   										ex) 서블릿 클래스의 상단부에 @WebServlet("/HelloServlet") 어노테이션을 명시하면
+					   										클라이언트는 아래와 같이 서블릿에 요청해야 한다 
+					   										http://localhost:8888/webstudy05-servlet-basic/HelloServlet  			  
+     			  
+ 어노테이션 ( @ ) : 의미있는 주석 , 컴파일 및 런타임 시점에 시스템에 영향을 주기 위한 의미있는 주석이다 
+     			  
+     			  
+ 설정 정보 ( 메타 데이터 ) 
+ 1) Annotation : 소스 코드 상에 설정 정보를 기술 
+ 2) XML : 소스 코드와 설정이 분리    			  
+     			  
+     			  
+ Http Request Method ( 요청 방식 ) 
+ 1. get 방식 : 주로 정보 조회용 , url 상에 전송 정보가 노출됨 , 전송 데이터 용량에 제한     			  
+ 2. post 방식 : 정보 전달용 ( 서버 자원의 데이터 변경시 사용 ) , url 상에서 전송 정보가 노출되지 않는다 ( 로그인시 post 방식 사용 ) 
+ 				 http request body 부분에 정보가 내장되어 전송 ( 별도의 한글 처리가 필요 ) , 
+ 				 전송 데이터 용량 제한은 별도로 없음 (ex - 파일업로드시에도 post방식 사용, 서버 상황에 따라 다름 )
+ 				 
+**********************************
+서블릿 테스트용 코드 
+//client에게 응답하기 위한 문서 타입을 지정 ( 한글 처리 포함 ) 
+response.setContentType("text/html;charset=utf-8");
+PrintWriter out=response.getWriter();
+out.println("<html>");
+out.println("<body bgcolor=yellow>");
+out.println(getServletName());
+out.println("</body>");
+out.println("</html>");
+out.close();
+
+***********************************
+
+
+
+
+
+
+
+		 			

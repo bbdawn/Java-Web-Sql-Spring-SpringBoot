@@ -1,0 +1,22 @@
+**webstudy12-Model1**				
+초기 웹 개발방식 : step1-jsp-db.jsp
+
+jsp 상에서 jdbc 개발 코드를 적용해서 database와 연동하는 구조
+
+JSP <---> Database				
+
+개발 생산성과 유지보수성을 향상시키기 위한 노력
+Model1 Architecture : 웹 어플리케이션 설계구조의 하나
+
+Software Architecture -> 소프트웨어 아키텍쳐(설계구조)는 소프트웨어 구성요소들 사이의 관계를 표현
+						 소프트웨어 설계와 업그레이드를 통제하는 지침과 원칙				
+				
+Model1 Architecture : 웹 어플리케이션 설계구조의 하나
+
+JSP <---> Java Component(DAO/VO...) <---> Database
+
+JSP : client의 request를 분석, Java Component(bean)와 연동, 적절한 결과를 client에게 응답(response)
+JavaComponent(bean) : Database Access Logic 과 business Logic을 담당
+
+참고) Java Component를 Java Beans라고 표현하기도 한다.
+		 			

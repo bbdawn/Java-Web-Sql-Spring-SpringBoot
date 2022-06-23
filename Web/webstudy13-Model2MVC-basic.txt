@@ -1,0 +1,26 @@
+**webstudy13-Model2MVC-basic**
+# Model2 Architecture MVC Design Pattern
+	Model2 설계방식의 근간을 이루는 다지안 패턴이 MVC Pattern이다
+	주로 WebMVC or Model2 MVC or MVC라고 한다
+	웹 어플리케이션 설계 방식 중의 하나인 Web MVC를 적용해서 개발하는 연습을 한다
+	
+	Web MVC : web application 설계 방삭의 하나로써 Model과 View와 Controller 영역으로 분리해서 설계 구현하는 것을 말한다 
+	
+	Model : Java Component(or Java Bean)가 담당 -DAO, Service, VO 등
+			비즈니스 로직과 데이터 엑세스 로직을 담당한다.
+	View : JSP가 담당
+			클라이언트에게 응답하는 목적으로 동적인 웹페이지를 제공한다.
+	Controller : Servlet이 담당
+			웹 어플리케이션의 제어자 역할
+			클라이언트의 요청을 분석, Model과 연동, 적절한 이동방식(forward or redirect)으로 View로 제어를 이동시켜 응답하게한다 
+			
+	<생산성 높이고, 유지보수성 용이하게, 응집도 높이고 결합도 낮추기 위함!!>		
+			
+기존 Model1 설계방식
+JSP <---> Java Component <--> Database
+
+Model2 MVC 설계방식
+			Controller <---> Model <---> Database
+View<--->		
+
+	 			

@@ -1,0 +1,146 @@
+**webstudy07-servlet-LifeCycle**
+- xml 기반 설정 이해위해 web module version 을 2.5 로 설정 
+  현 프로젝트에서 서블릿 생성하면 어노테이션 기반 설정이 아니라 xml 기반 설정으로 만들어진다 
+  
+- 서블릿 계층구조 ( Servlet Hierarchy )   
+  클래스 다이어그램은 servlet-hierarchy.jpg 를 참조한다 
+  
+  <<interface>>
+  Servlet : 서블릿 인터페이스는 모든 서블릿(jsp 포함)이 implements 해야 하는 abstract method를 정의하고 있다 
+  
+  <<abstract>>
+  GenericServlet : GenericServlet class 는 Servlet Interface를 implements 하는 추상 클래스(abstract class) 
+  					 프로토콜에 독립적인 abstract class 
+  					 일반적인 서버 프로그램이 가져야 하는 기능을 자식에게 물려주고 
+  					 자식 차원에서 구현해야 하는 service() 는 abstract 메서드로 선언해서 구현을 강제한다 
+  					 
+  <<abstract>>
+  HttpServlet : GenericServlet을 상속받는 abstract class 
+  				  Http Protocol에 특화된 서비스를 구현하는 데 유용한 기능을 자식에게 물려준다 
+  				  일반적인 Java Web Program ( Servlet , JSP ) 들은 이 클래스를 상속받아 자신의 서비스를 구현한다 						  
+  
+  위 설계방식의 장점 
+  : 일반 웹어플리케이션 개발 진영에서는 Servlet API ( ex - HttpServletRequest , HttpServletResponse , HttpSession interface 등 )
+    를 이용해 개발 , 실제 동작은 개별 WAS 제품군 ( ex - ApacheTomcat , JBoss 등 ) 에서 Servlet API를 구현한 구현체가 실행된다 
+    만약 웹어플리케이션 배포가 다른 WAS 로 변경되더라도 웹어플리케이션 변경없이 잘 동작된다 
+    -> 위의 설계방식은 웹어플리케이션과 개별 WAS 제품군과의 결합도를 낮추어 유지보수성을 향상시킬 수 있다는 장점이 있다 
+  
+  - Servlet LifeCycle 
+  	init() -> service() -> destroy() 
+  	Servlet/JSP 계층구조의 최상위 인터페이스인 Servlet 에서 정의한 abstract method 들이다 
+  	-> 모든 서블릿/jsp가 구현하고 있는 라이프사이클 메서드 
+  	
+  	init() : 서블릿 당 한번 실행 , 서블릿의 초기화 작업을 수행 
+  	service() : 클라이언트 요청시마다 매번 실행, 해당 서블릿이 클라이언트에게 서비스하는 메서드 
+  				( 내부적으로 Http Request Method 에 따라 doGet() 과 doPost() 를 호출 ) 
+    destroy() : 해당 서블릿이 서비스 종료되기 직전에 한번 실행 				 
+  
+    서블릿 라이프사이클을 관리하는 주체는 WAS( Web Container or Servlet Container ) 다 
+    -> WAS 는 웹어플리케이션 설정 정보 ( web.xml or @WebServlet Annotation ) 를 로딩하고 
+        클라이언트의 첫 요청시 서블릿 객체를 생성 , init() -> service() , WAS 종료시 destroy()를 호출해 실행하게 한다 
+  
+  
+    Servlet LifeCycle 구조 
+    
+    									WAS( Web Server + Web Container )
+    									
+    client browser   --request-->   is loaded? ---no---> class loading
+  											|						|
+  											|					  서블릿 객체 생성 	: 단 한번 생성 
+  											|						|
+  											|					  init() 호출 : 단 한번 실행 		
+  											|						|
+  										  yes ----------->   service() -> doGet() or doPost() 호출 : 요청시마다 매번 실행 
+  										  
+  										  						 destroy() : WAS 종료 직전에 한번 호출 
+  
+  Web Application Server : Web Server + Web Container 
+  							   Web Server : HTTP 에 의거해 html 서비스(html,javascript,css, image 등)하는 서버 
+  							   Web Container : 서버 프로그램(Servlet/JSP) 실행환경 제공
+  							   					  서버 프로그램의 라이프 사이클을 관리 	  
+
+	LifeCycleServlet 이 10명의 클라이언트에게 요청을 받아서 서비스하였다 
+	LifeCycleServlet 객체는 몇번 생성? 1번 
+	init() 몇번 실행? 1번 
+	service() -> doGet() 몇번 실행? 10번 
+	destroy() 몇번 실행? 0번 ( destroy() 는 WAS 종료 직전에 한번 호출 ) 
+
+
+- load on startup 설정 
+  : Servlet LifeCycle의 특성상  첫 클라이언트가 요청시에 해당서블릿객체생성 , init 이 실행되는 데 
+    첫 클라이언트의 요청에 대한 응답 속도가 느려질 수 있다 
+    load on starup 설정을 통해 웹어플리케이션 시작 시점에 미리 해당 서블릿 객체 생성 및 init 을 실행하여 
+    신속한 서비스가 되도록 한다  
+
+web.xml 의 예 
+  <servlet>    
+    <servlet-name>LoadOnStartUpTestServlet</servlet-name>
+    <servlet-class>step3.LoadOnStartUpTestServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+# ServletConfig 와 ServletContext 
+
+ServletConfig : 개별 서블릿에 특정한 정보(서블릿이 동작하는 데 필요한 설정 정보 , "ServletContext 객체의 주소값_사원id")를 저장하는 객체  
+(서블릿설정)		서블릿 당 하나 생성 
+				  HttpServlet을 상속받은 서블릿은 init(ServletConfig config) 메서드를 가지게 된다 
+				  WAS(Web Container) 가 init 을 실행할 때 매개변수의 인자로 ServletConfig 객체를 전달한다 
+				  
+				  ex) 사원(서블릿) 당 하나의 "사원증"(ServletConfig) 
+
+
+ServletContext : 웹 어플리케이션 내의 모든 서블릿과 jsp 즉 웹프로그램이 접근해서 사용하는 공유 자원 
+(서블릿환경정보)	 웹 어플리케이션 당 하나 생성 
+				   WAS(Web Container)가 웹어플리케이션 시작 시점에 ServletContext 객체를 생성하고 
+				   종료 시점에 소멸된다 
+				   
+				   ex) 회사(web application) 의 "사내 인트라넷"(ServletContext) 
+				   	    kosta238 					 cafe 
+				   	    
+ >>사내인트라넷은 사원이라면 모두 사용할 수 있다. 
+ 	단, 사원증(사원id)을 가지고 있는 사원이라야 사용할 수 있다
+
+
+# ServletContextListener : Application Lifecycle Listener
+							  웹어플리케이션 시작 시점과 종료 시점의 이벤트를 감지해서 시작 시점에 필요한 초기화 작업(ex-보안)과
+							  종료 시점에 필요한 백업 및 로그 작업 등을 처리하는 데 이용할 수 있다 
+							  
+							  contextInitialized(event) : 웹어플리케이션 시작 시점에 호출되어 실행되는 메서드 
+							  contextDestroyed(event) : 웹어플리케이션 종료 시점에 호출되어 실행되는 메서드 
+
+
+
+
+
+
+
+
+**********************************
+서블릿 테스트용 코드 
+//client에게 응답하기 위한 문서 타입을 지정 ( 한글 처리 포함 ) 
+response.setContentType("text/html;charset=utf-8");
+PrintWriter out=response.getWriter();
+out.println("<html>");
+out.println("<body bgcolor=yellow>");
+out.println(getServletName());
+out.println("</body>");
+out.println("</html>");
+out.close();
+
+***********************************
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		 			

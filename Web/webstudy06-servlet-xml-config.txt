@@ -1,0 +1,43 @@
+**webstudy-6-servlet-xml-config**
+
+ web module version 을 3.1 이 아니라 2.5 로 생성 
+ 
+ 서블릿을 생성하면 어노테이션 설정이 아니라 xml 기반으로 설정된다 
+ 이 설정 파일은 WEB-INF/web.xml 로 생성된다 
+ web.xml : Deployment Descriptor ( DD ) , 웹어플리케이션 설정 정보를 기술하는 문서 
+ 
+ 예) 2.5 버전 설정 
+   <servlet>   
+    <servlet-name>HelloServlet</servlet-name>
+    <servlet-class>step1.HelloServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>HelloServlet</servlet-name>
+    <url-pattern>/HelloServlet</url-pattern>
+  </servlet-mapping>
+  
+  위를 3.0 이상 버전 설정 
+  @WebServlet(url pattern) 
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		 			

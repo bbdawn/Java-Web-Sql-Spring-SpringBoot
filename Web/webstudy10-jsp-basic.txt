@@ -1,0 +1,34 @@
+**webstudy10-jsp-basic**
+
+JSP : Java Server Page 
+	    동적인 웹페이지를 위한 기술 ( Template Engine ) 	
+        HTML 문서 구조상에서 자바코드를 삽입하는 형태로 개발 
+        JSP 는 WAS(Web Container) 에 의해 .jsp -> .java -> .class 로 생성된다 
+        생성된 java class 는 HttpServlet의 자식 클래스이다. 즉 JSP is a Servlet 
+        
+Web MVC ( or Model2 Architecture MVC Pattern ) 에서는 Model 은 java component , View 는 jsp , Controller는 Servlet이 담당한다 
+
+JSP 기본 문법 
+1) JSP 주석 <%--     --%>    참고) HTML  주석 <!--   --> , JavaScript 와 CSS  주석 /*    */ 
+2) scriptlet 스크립틀릿  <% java code  %>  :  service 메서드 내에서 삽입되는 자바코드 
+3) expression 		<%=   %>   : service 메서드 내에 out.print() 로 삽입 
+4) declaration  <%!  %> : 멤버변수 , 메서드 정의시 사용 
+5) directive   <%@   %>  : 현 jsp 문서 정보를 웹컨테이너에 전달 , 한글처리방식 , 문서타입 , import , errorPage 등을 기술 
+
+JSP LifeCycle - Servlet과 동일 ( 차이점은 jsp 를 java class 로 생성, 컴파일해서 실행 ) 
+
+  									WAS( Web Server + Web Container )
+    																	 tomcat/work 디렉토리에 .java 와 .class 가 생성된다 
+    client browser   --request-->   is loaded? ---no---> .jsp -> .java -> .class ->  class loading
+  											|						|
+  											|					  객체 생성 : 단 한번 생성 
+  											|						|
+  											|					  init() 호출 -> jspInit() 호출  		
+  											|						|
+  										  yes ----------->   service() -> jspService() 호출 : 요청시마다 매번 실행 
+  										  
+  										  						 destroy() -> jspDestroy() 호출 : WAS 종료 직전에 한번 호출 
+
+	
+
+		 			

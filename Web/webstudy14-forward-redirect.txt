@@ -1,0 +1,24 @@
+**webstudy14-forward-redirect**			
+# 이동방식 forward와 redirect(Controller인 Servlet에서 View인 jsp로 제어를 이동시키는 방식)			
+	1) forward 방식
+		request와 response가 유지되면서 제어가 되는 방식
+		Web Container 상에서 이동되므로 클라이언트 측은 이동여부를 알 수 있다 (URL 상의 변경이 없음)
+		클라이언트가 재동작 즉 재요청(새로고침) 할 경우 request와 response가 유지되므로 기존 동작이 반복된다
+		주로 정보 조회(select)시 이용된다
+		
+		Model과 연동 결과를 request에 저장(ex- request.setAttribute(name,value)해서 View에 정보를 공유
+		View는 클라이언트에게 응답시에 연동 정보를 request로부터 반환(ex- request.getAttribute(name))받아 정보를 공유
+		
+		Controller forward의 예시)
+		MemberDAO dao=new MemberDAO();
+		MemberVO vo=dao.findMemberById(id)
+		request.setAttribute("vo",vo);
+		request.getRequestDispatcher(view name).forward(request,response);
+		
+		
+	2) redirect 방식
+		응답시 클라이언트에게 이동할 url을 지정하여 // 클라이언트가 이동하게 하는 방식
+		기존 request와 response는 유지되지 않는다. 
+		재 요청시 기존 동작은 반복되지 않는다. 
+		서버 상태 변경(insert, delete, update를 통한 데이터 변경)에 적합
+			 			

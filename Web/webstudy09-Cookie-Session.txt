@@ -1,0 +1,107 @@
+**webstudy09-Cookie-Session**
+
+HTTP 특성 : Stateless , 사용자의 상태 정보를 유지하지 않는다 
+
+세션 관리 : 사용자 상태 정보를 일정 조건동안 유지 
+
+
+사용자 상태 정보를 유지하는 방식 
+1. Cookie 
+   사용자 상태 정보를 클라이언트에 저장 
+   저장 용량의 제한 ( 4kb )
+   데이터 타입은 문자열로 한정 
+   Cookie 유효 시간을 별도로 설정하지 않으면 브라우저 실행시에만 유효 
+   Cookie 유효 시간을 설정하면 그 유효시간 내에서만 Cookie를 사용할 수 있다 
+   
+   step1) 클라이언트가 접속, 서버측에서 쿠키를 생성해서 클라이언트에게 전달하여 클라이언트측에 쿠키가 저장  
+   
+   		   client(browser) --request--> SetCookieServlet
+   		   									Cookie 생성 ( new Cookie(name,value) )  
+   		   									cookie.setMaxAge(30); // 30초 동안 해당 쿠키가 유효 
+   		   									response.addCookie(cookie); // 클라이언트 측으로 쿠키 전송 
+   		   					<--response--				
+   
+   step2) 클라이언트가 접속 , 서버측에서 쿠키를 확인해서 특정쿠키가 존재하면 그 쿠키의 value를 확인 
+   			
+   			client(browser) --request--> GetCookieServlet
+   											 request.getCookies():Cookie[] // client측에 저장되어 있는 쿠키들을 배열로 반환 
+   											 Cookie 의 getName() , getValue() 를 이용해 특정 쿠키 값을 확인 
+   							 				 화면에 쿠키 값 출력 
+   							 <--response--  				 
+   
+   
+2. Session(HttpSession) 
+   사용자 상태 정보를 서버에 저장 
+   저장 용량 및 데이터 타입에 제한이 없다 
+   로그인, 로그아웃 시에 세션이 이용된다 
+   WAS에 세션 유지 시간이 별도로 설정되어 있다 (apache-tomcat/conf/web.xml 에 30분으로 세션 유효시간이 설정되어 있음)
+   개별 웹어플리케이션에서 세션 만료 시간을 설정할 때는 WEB-INF/web.xml 에서 별도의 session timeout 시간을 설정하면 된다 
+   
+   세션유지기간 
+   1) 지정한 유효시간 내에 새로운 요청이 없으면 세션이 만료 
+   2) 브라우저 종료시 세션 만료 
+   3) 로그아웃을 실행할 때 
+
+   HttpSession 관련 주요 메서드 
+   - HttpServletRequest 의 getSession() or getSession(true) : 기존 세션이 있으면 기존 세션을 반환, 없으면 새로 생성 
+   - HttpServletRequest 의 getSession(false) : 기존 세션이 있으면 기존 세션을 반환, 없으면 null을 반환 
+
+   - HttpSession 의 setAttribute(name,value) : 세션에 특정 정보를 저장할 때 사용 , String 타입의 name, Object 타입의 value로 할당한다 
+   - HttpSession 의 getAttribute(name) : 세션에 저장된 특정 정보를 반환받을 때 사용 , Object 타입의 객체가 리턴된다 
+   
+   - HttpSession 의 invalidate() : 세션을 무효화시킨다. 로그아웃시 사용 
+
+==============================
+로그인 과정에서의 세션 처리 흐름 
+
+client browser -- request -->  LoginServlet
+								   if(db에 있는 id와 password가 일치하면) 
+								   HttpSession session=request.getSession(); //세션 생성 
+								   session.setAttribute(name,value); // 회원 인증 정보를 할당
+								   로그인 완료 응답하면 client에 jsessionid name의 cookie가 클라이언트측에 저장된다  	
+				<--response-- 
+				
+=============================
+로그인 후 인증 회원만 서비스 받을 수 있는 프로그램에 접속했을 때 세션 처리 흐름 
+
+client browser -- requst -->  CafeServlet
+								   HttpSession session=request.getSession(false); //기존 세션이 있으면 반환, 없으면 null 반환 	
+								  // 위 코드가 실행되면 클라이언트 브라우저에 저장된 jsessionid 값과 서버 측에 저장되어 있는 session id 값을 비교해서
+								  // 일치하면 세션 객체를 반환하고 없거나 일치하지 않으면 null 을 반환 
+								  if(session!=null&&session.getAttribute("인증정보name")!=null){//세션이 존재하고 세션 안의 인증정보가 존재할 때 
+								  	카페 서비스 
+								  }	 
+				
+				
+
+
+
+**********************************
+서블릿 테스트용 코드 
+//client에게 응답하기 위한 문서 타입을 지정 ( 한글 처리 포함 ) 
+response.setContentType("text/html;charset=utf-8");
+PrintWriter out=response.getWriter();
+out.println("<html>");
+out.println("<body bgcolor=yellow>");
+out.println(getServletName());
+out.println("</body>");
+out.println("</html>");
+out.close();
+
+***********************************
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		 			

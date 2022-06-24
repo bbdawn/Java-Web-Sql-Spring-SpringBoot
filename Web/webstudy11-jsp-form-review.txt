@@ -15,7 +15,8 @@ onkeyup : 키보드의 키를 눌렀다가 뗄 때 발생하는 이벤트
 	   Template Engine 기술
 	   
 client									WAS
-browser          --request-->	   		Servlet/JSP(동적으로 HTML/JavaScript/CSS 구성된 html 문서 정보를 HttpResponse Body영역으로 전달)
+browser          --request-->	   		Servlet/JSP(동적으로 HTML/JavaScript/CSS 구성된 html 문서 정보를 
+										HttpResponse Body영역으로 전달)
 	   			<--response--
 	   			
 HTML/JavaScript/CSS

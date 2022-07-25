@@ -1,0 +1,183 @@
+ 				
+**SpringBoot Project**
+스프링 부트는 스프링의 하위 프로젝트 중 하나로써
+"단독으로 빠르게 개발 가능한 스프링 프로젝트"이다 
+프로젝트 차원에서 웹컨테이너를 내장하여
+stand-alone 한 프로젝트를 지원한다 (물론 기존 방식으로 서버에 배포해서 실행 가능하다)
+(stand-alone[스탠드 얼론]이란 다른 어떤 장치의 도움 없이 그 자체만으로 완비된 장치를 말한다)
+스프링 관련 복잡한 설정을 자동화하고 간편화하여
+효율적으로 개발 할 수 있도록 지원한다
+
+*COC* 
+설정을 넘어 관례(CoC; Convention over Configuration) : 
+관습적이지않은 면(unconventional aspects of the application)만 정의된다
+즉 자주 사용하는 부분은 관례를 정하여 자동 설정하고 이를 따르지 않을 경우에만 설정
+
+
+
+
+
+================================
+SpringBoot + MyBatis + JSP 
+================================
+
+1. New Spring Start Project 에서 
+
+Name, Group ID, Java Version, Package 입력  
+
+2. New Spring Starter Project Dependencies에서 
+Developer Tools - Spring Boot DevTools 
+SQL - MyBatis Framework 와 Oracle Driver 
+Web - Spring Web 
+선택 후 next  
+
+
+3. 프로젝트 생성 완료 후 
+pom.xml에 추가 
+<dependency>
+<groupId>org.apache.tomcat.embed</groupId>
+<artifactId>tomcat-embed-jasper</artifactId>
+</dependency>
+<dependency>
+<groupId>javax.servlet</groupId>
+<artifactId>jstl</artifactId>
+</dependency>
+
+4. src/main/resources 의 application.properties 에서 설정한다 
+# port setting 
+server.port=7777
+# dbcp setting
+spring.datasource.driver-class-name=oracle.jdbc.OracleDriver
+spring.datasource.url=jdbc:oracle:thin:@127.0.0.1:1521:xe 
+spring.datasource.username=scott 
+spring.datasource.password=tiger 
+#view resolver
+spring.mvc.view.prefix=/WEB-INF/views/
+spring.mvc.view.suffix=.jsp
+#devtools : reloading 
+spring.devtools.livereload.enabled=true
+
+#log level setting
+#logging.level.root=ERROR
+
+# mybatis setting
+#mybatis.type-aliases-package=org.kosta.myproject.model
+#mybatis.configuration.map-underscore-to-camel-case=true
+
+5. 아래편 src/main에서  webapp/WEB-INF/views 디렉토리 생성 후  home.jsp 작성하고
+   상단부 src/main/java에서 org.kosta 팩키지 이하에서 org.kosta.controller.HomeController 만든 후 
+   org.kosta의 SpringbootApplication 실행하고 브라우저에서 localhost:7777 로 테스트 해본다 		
+   
+6. SpringBoot는 SpringBootStudy1Application.java 의 main을 실행시킨다 ( 기존 run on server 는 사용 x ) 
+7. 정적인 파일은 src\main\resources\static 아래에 위치시킨다 ( 이미지 , css , js .. )    
+   
+   
+ ================================
+SpringBoot + MyBatis + Thymeleaf 
+================================  
+   
+SpringBoot 에서 지원하는 템플릿 엔진 
+
+Thymeleaf : 유지보수성이 높은 템플릿 생성 방법을 제공하고 
+HTML의 구조상에서 개발하여 기존 HTML 코드를 변경하지 않고  개발하는 방식(Natural Templates)으로  
+디자인 팀과 개발 팀 간의 협업이 보다 용이해짐
+
+Thymeleaf 와 유사한 템플릿 엔진 : jsp(jstl) , freemarker , mustache , groovy 등이 있다 
+
+  
+**SpringBoot 기반 Template Engine : Thymeleaf 개발단계**
+
+
+0. 프로젝트 생성 	
+    New Spring Starter Project Dependencies 
+   Developer Tools - Spring Boot DevTools 
+   SQL - MyBatis Framework 와 Oracle Driver 
+   Web - Spring Web 
+   Template Engine - Thymeleaf
+   
+    
+    
+    Maven pom.xml  -> 필요시 추가하면 됨 
+    
+	템플릿 레이아웃을 위해 아래 라이브러리를 추가한다 
+	<dependency>
+		<groupId>nz.net.ultraq.thymeleaf</groupId>
+		<artifactId>thymeleaf-layout-dialect</artifactId>
+	</dependency>
+
+
+1. Eclipse MarketPlace 에서  thymeleaf 를 검색해서 개발도구를 설치한다 
+   프로젝트 마.오 - configure - add thymeleaf nature, add tern nature 	 
+ 
+2. application.properties 에서 port , dbcp , mybatis를 아래와 같이 설정한다 
+
+#port
+server.port=7777
+#dbcp
+spring.datasource.driver-class-name=oracle.jdbc.OracleDriver
+spring.datasource.url=jdbc:oracle:thin:@127.0.0.1:1521:xe 
+spring.datasource.username=scott 
+spring.datasource.password=tiger 
+#devtools : reloading 
+spring.devtools.livereload.enabled=true
+#log level setting
+logging.level.root=warn
+# mybatis setting
+#mybatis.type-aliases-package=org.kosta.myproject.model.vo
+mybatis.configuration.map-underscore-to-camel-case=true
+
+
+Thymeleaf Template Engine은  설정이 기본으로 제공되므로 별도로 설정을 추가할 것은 없다 
+
+3. view 정보는 src\main\resources\templates 아래에 html 확장자로 작성한다 
+    Controller 와 Model은 기존과 동일하다 
+    
+4. SpringBoot app 실행 후 localhost:7777 로 접근해서 테스트해본다    
+    
+    
+
+    
+참고)     
+ Spring Legacy 에서는 다음과 같이 xml 형식으로 설정할 수 있다. 
+ SpringBoot 에서는 자동설정된다(src\main\resources\templates 아래에 위치시키면 된다)  
+ 
+  <beans:bean id="templateResolver"  class="org.thymeleaf.templateresolver.ServletContextTemplateResolver">
+    <beans:property name="prefix" value="/WEB-INF/views/" />
+    <beans:property name="suffix" value=".html" />
+    <beans:property name="templateMode" value="HTML5" />
+</beans:bean>
+<beans:bean id="templateEngine" class="org.thymeleaf.spring5.SpringTemplateEngine">
+    <beans:property name="templateResolver" ref="templateResolver" />
+</beans:bean>
+<beans:bean class="org.thymeleaf.spring5.view.ThymeleafViewResolver">
+    <beans:property name="templateEngine" ref="templateEngine" />
+</beans:bean>
+   
+   
+   
+ 														 		   
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  

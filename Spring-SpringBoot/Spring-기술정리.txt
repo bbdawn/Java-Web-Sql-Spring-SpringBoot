@@ -1,0 +1,687 @@
+**Spring 주요 목차**
+- Spring IOC / DI ***
+- AOP ***
+- MyBatis Framework ***
+- SpringMVC ***
+- jUnit Framework
+- jQuery / Ajax / JSON
+- REST
+- SpringBoot ***
+- Thymleaf ***
+- Spring Security ***
+- Spring Cloud, MSA, JPA ***
+
+
+-------------------------------
+- 개념정리
+	library : 라이브러리, 재사용 가능한 프로그램들의 모음 , jar : 자바 프로그램 압축 확장자
+	component : 프로그램이 실행될 떄 하나의 독립적 기능단위를 이루어 부품화 하는 것 , bean : 자바 컴포넌트 
+	API : Application Programming Interface 응용 프로그램을 개발하기 위해 제공하는 인터페이스 
+	Framework : 사전적 의미 -> 뼈대, 틀, 응용프로그램의 기반 
+				프레임워크는 반완전한 어플리케이션이다. -> 제공가능한 것을 최대한 지원
+				
+				
+	Spring Framework : java 어플리케이션의 설계, 구현, 테스트, 운영에 대한 
+						다양한 컴포넌트와 디자인 패턴을 제공 
+						개발자가 비즈니스 로직에 집중하게 하는 것이 목적					
+				
+						IOC/DI, AOP, MVC, SpringBoot 등을 지원하고,
+						MyBatis, JPA, JUnit등과 같은 기술의 통합을 지원한다
+						
+
+**IOC/DI**
+- IOC : Inversion Of Control, 제어의 반전, 역제어
+		IOC는 소프트웨어 디자인 패턴, 인스턴스를 제어하는 주도권이 역전되는 설계를 말한다. 
+		컴포넌트를 구성하는 인스턴스 생성과 의존관계 연결처리를 IOC 컨테이너에 위임
+		필요시 생성하는 기존 제어방식이 아니라 필요로하는 의존대상을 IOC container로부터 확보하는 것 (확보하는 방법 : DI_주입, DL_검색)
+		* 복이 오면 웃는다 -IOC-> 웃으면 복이온다
+		* 내가 매일 마트에 가서 우유를 구매하다가 -> 우유 구독 서비스 이용하는 것(내 집 앞까지 배달해줌) 
+		
+		장점 : loose coupling , AOP 지원
+		
+		
+- DI : Dependency Injection, 의존성 주입
+		필요로 하는 의존 대상(의존성, 컴포넌트, bean, instance .. )을 "주입(injection)"을 통해 확보하는 방식. 
+		즉 IOC을 DI기법을 통해 실현한다. 
+		* 버거 가게에서 셰프가 직접 레시피를 정하는 상황 -> 버거 본사에서 결정한 레시피를 셰프가 받아서 사용하는 것
+- DL : Dependency Lookup, 의존성 검색
+		필요로 하는 의존 대상(의존성, 컴포넌트, bean, instance .. )을 "검색(Lookup)"을 통해 확보하는 방식. 
+		즉 IOC을 DL기법을 통해 실현한다.
+SINGLETON
+	
+		
+- IOC, DI, DL 또는 IOC(DI) Container의 목적 -> LOOSE COUPLING
+	: 각 컴포넌트, 인스턴스, 생성 및 통합관리의 목적은 
+		Loose Coupling 느슨한 결합도, 낮은 결합도를 통한 컴포넌트 간의 의존성 해결 (유지보수성 높아짐) 
+		인스턴스 scope 관리 -> Singleton이 기본 적용 
+		AOP Proxy 지원 
+	
+- Singleton Pattern : 시스템 상에서 단 한 번 객체 생성해 공유하여 사용하는 설계 패턴
+	bean scope 관리 - singleton 한번 bean을 만들면 계속해서 재사용할 수 있음 
+
+- Maven : 프로젝트 관리 도구, 빌드 툴 - compile, package, deploy
+			의존 라이브러리를 일괄적으로 관리 
+			원격 저장소에 있는 라이브러리들을 한번 로컬 저장소에 저장해 재사용 
+			설정 파일 : pom.xml (pom -> project object model)이고 
+						이 설정을 프로젝트 시에 팀원들과 공유한다 
+- Spring 설정 방식 : xml, java, Annotation 설정방식이 있다. 
+					xml + Annotation 또는 java + Annotation 조합으로 설정하는 방식이 주로 사용된다
+					
+					Spring Legacy project에서는 xml + Annotation 설정 방식이 주로 사용되고,
+					SpringBoot project에서는 java + Annotation 설정 방식이 주로 사용된다. 
+
+- xml : 소스 코드와 설정이 분리
+
+- Annotation : 의미있는 주석, 컴파일과 런타임시에 영향을 준다. 
+				소스 코드 상에 설정이 기술됨. 
+
+
+- Spring Annotation
+	@Configuration // spring 설정 클래스임을 Spring IOC Container에 알리는 어노테이션
+	
+	@Bean // 메서드가 반환하는 객체를 Spring IOC Container에 bean으로 등록하는 어노테이션
+			메서드 명이 bean id가 된다. 
+			
+	@Component("tool") //스프링 IOC Container에 해당 클래스가 컴포넌트임을 알리는 어노테이션
+						해당 클래스를 bean으로 컨테이너에 등록하게 된다 
+
+
+	
+
+	@ComponentScan("org.kosta.myproject") //지정한 패키지 하위의 클래스들을 스캔해서 컴포넌트 계열 어노테이션이 명시된 class를 bean으로 생성해 등록
+											=또한 DI 어노테이션을 읽어서 반환한다. 
+
+
+- Component 계열 어노테이션 -> 컴포넌트 계열 어노테이션이 명시된 클래스는 스프링 컨테이너에 의해 
+							bean으로 생성되고 관리됨. 
+	@Component - 컴포넌트 계열의 상위 타입, 일반 컴포넌트 클래스에 명시
+	@Repository - 영속성 계층 ( persistence layer : Data Access Layer )에서 사용
+	@Service - 비즈니스 계층에서 사용 (service or business layer) / 서비스, 실행 클래스를 명시한다 
+	@Controller - 컨트롤러에서 사용 (presentation layer), MVC에서 Controller Logic 정의 클래스에서 사용 / 컨트롤러 클래스를 명시한다
+	@RestController - REST API Controller 에서 사용 @Controller + @ResponseBody  
+	
+								
+										
+										
+- DI(Dependency Injection) 관련 어노테이션
+	: 스프링 컨테이너로부터 의존성 주입 (필요로 하는 bean을 주입) 받고자 할 때 명시하는 어노테이션
+		(선언한 타입에 맞는 객체를 Spring IOC Container가 주입)
+	-> 의존성 주입 즉 DI는 field(변수, 상수), constructor, setter로 가능하다
+	-> 생성자(Constructor)를 통한 DI를 권장한다 (UnitTest_단위테스트 의 용이성 등)	
+		<<생성자를 통한 DI를 권장>>
+		1.
+		field(constant, variable) 주입, setter(수정자) 주입은 의존성 객체가 주입되지 않아도
+		이를 의존하는 객체가 생성될 수 있다 (신용정보 없이 카드가 생성될 수 있는 원리)
+		-> 런타임시 오류 발생할 가능성이 있음. 
+		반면에 Constructor(생성자) Injection(주입) 은 해당 객체가 생성되는 시점에 반드시 
+		의존성 객체가 주입되어야 객체가 만들어지는 구조 (신용정보를 할당해야 카드가 생성될 수 있는 원리. 안 그러면 객체가 못만들어짐)
+		2. 
+		단위 테스트에 용이 -> 의존 관계를 가지는 다양한 객체를 생성해서 생성자에 주입해 테스트해볼 수 있음. 
+		
+	@Autowired : 의존 대상 bean을 타입으로 검색해 주입 (생성자Constructor, 필드, setter 모두 가능)
+	-> 만약 동일한 인터페이스 타입에 다수의 구현체가 존재할 경우에는
+		추가적으로 @Qualified(bean name) 어노테이션을 추가해야한다. 
+		
+	@Resource : 의존 대상 bean을 타입으로 검색해 주입 (필드, setter에 가능) 
+	-> 만약 동일한 인터페이스 타입에 다수의 구현체가 존재할 경우에는
+		@Resource(name="bean name") 속성을 추가적으로 명시해야한다. 
+		
+- Spring Xml Config
+	<!--
+	Spring Container가 base package 하위의 클래스들을 스캔해서 컴포넌트 계열 어노테이션이
+	명시된 클래스를 객체 생성해 bean으로 등록한다.
+	또한 DI 계열 어노테이션을 확인해 처리한다.  
+ 	-->
+	<context:component-scan base-package="org.kosta.myproject"/>
+
+
+(+) 계층 220518
+										Spring IOC Container -> (xml config or java config) + Annotation        <singleton으로 관리>
+프레젠테이션 계층 Presentation Layer / *@Controller* MemberController   *@Autowired* Constructor
+비즈니스(서비스) 계층 Service Layer / 				MemberService <|--*@Service*-- MemberService Impl *@Autowired* Constructor
+영속성 계층 Persistence Layer / 							MemberDAO <|--*@Repository*-- MemberDAO Impl *@Autowired* Constructor
+		
+
+
+**AOP**
+	- Aspect Oriented Programming
+		관점 	지향 	프로그래밍
+		시스템을 핵심 관심사(Core Concern)와 횡단 관심사(or 공통관심사 Cross-Cutting Concern)으로 구분해 설계 구현 하는 것을 말한다
+		
+		Core Concern과 Cross-Cutting Concern로 인식 별도
+	- Core Concern (핵심 관심사) 
+		: 시스템의 업무 목적에 해당하는 주요 로직 (ex - 회원관리, 결제, 게시)
+	- Cross-Cutting Concern (횡단 관심사 or 공통 관심사)
+		: 시스템의 여러 부분에 걸쳐 적용되는 공통적인 로직 (ex - 트랜잭션_commit, rollback , 로깅, 보안)
+		: 별도의 로직에서 만들어서 코어에 적용
+
+	- why?
+		AOP는 시스템의 여러 영역에 걸쳐 공통적이고 반복적으로 적용된 횡단 관심사 로직을 분리하여
+		별도의 모듈에서 설계 구현 운영하는 프로그래밍 기법이다 
+		-> 반복적인 작업을 피할 수 있어 효율적인 개발이 가능
+			이후 업데이트 시 AOP 모듈 부분만 변경하면 되므로 유지보수성이 향상
+		
+	- AOP 용어
+	 	Advice : 특정한 시점에 적용되는 횡단 관심사 기능
+	 			(Advice 종류 : before, after, after-returning, after-throwing, around)
+	 	
+	 	Weaving : Core에 Advice를 적용 
+	 	
+	 	Pointcut : Advice 적용 대상을 지정 -> AspectJ 기술을 이용 (execution, within, bean 등)
+
+	 	
+	 	** Proxy Design Pattern ((springstudy07-AOP-solution2 220519))
+	 		: AOP에 적용된 디자인 패턴 
+	 		Proxy : 대리인. 대신해서 역할을 수행 
+	 				Proxy는 서비스 제공하는 측의 특정 기능을 수행하는 대리자 역할을 하는 객체이다.  
+	 		
+	 				사용하는 측(팬)과 서비스를 제공하는 측(아이유)의 매개자로서의 인터페이스(개념적) 역할을 Proxy가 한다. 
+	 				(팬 <-> 아이유 매니저 <-> 아이유)
+	 				(국회의원 <-> 보좌관 <-> 시민)
+	 				(집주인 <-> 부동산 중개인 <-> 세입자)
+	 			
+	 		Core 객체를 사용하고자 할 때, 사용하는 측에서 실제 Core객체를 참조해 사용하는 것이 아니라
+	 		대리인 역할을 하는 Proxy 객체를 통해 Core 객체를 사용하게 함으로써 (IOC Container가 bean을 제공)
+	 		Proxy 객체가 Cross Cutting Concern을 수행하게 한다
+	 		
+	 	** AOP 동작 원리
+	 		Spring IOC Container는 AOP 적용시 실제 Target Core 객체가 아니라 Core를 참조하는 Proxy 객체를 사용하는 측으로 전달함으로써
+	 		실행시 Proxy가 Cross Cutting Concern을 실행하도록 하는 구조이다
+	 		Proxy는 Core가 Implements 하는 인터페이스를 동일하게 implements 한다  
+			//implements는 여러 개의 interfaces를 상속 받을 수 있으며, 자식 클래스는 부모의 기능을 다시 정의해서 사용해야한다.
+			동일한 인터페이스로 사용하므로 Proxy(매니저)가 아니라 Core(아이유)로 사용자측(팬)은 인식한다
+			만약 Core가 인터페이스를 구현하지 않는 상태일 경우에는 Proxy는 Core class를 상속받아 Proxy를 정의한다. 
+	 	
+	 	
+	  	** Logging (Log4j, Logback, Slf4j)
+			로깅(Logging) : 시스템 동작에 관한 정보를 제공하는 기록 
+							주로 시스템 실행 정보 및 성능, 에러에 대한 정보를 제공
+							
+							system.out.println() -> 개발 및 운영에 대한 로그 레벨을 지정할 수 없고 파일에 저장할 수도 없음 
+							-> 로깅 관련 기술이 필요
+			자바 진영에서 사용하는 로깅 관련 프레임워크는 대표적으로 Log4j, Logback 등이 있음. 
+			
+			설정파일 (log4j.xml, logback.xml 등)에서 패키지 별로 레벨 설정이 가능
+			지정한 레벨 등급 이상의 로그만 기록하고 저장하는 방식
+			파일에 로그 저장, 용량 설정, 실행 중인 상태(런타임시) 설정 변경 적용 등 여러 기능이 제공 
+			
+			
+			로그 레벨 
+			ERROR (가장 높은 레벨)
+			WARN
+			INFO
+			DEBUG
+			TRAVE (가장 낮은 레벨)
+			
+			
+			SLF4J : Simple Logging Facade -> Facade는 사전적 의미로 표면, 겉면 
+					SLF4J는 로깅 퍼사드로서 여러 로깅 라이브러리 구현체들(Log4j, Logback 등..)을
+					하나의 통일된 방식으로 사용할 수 있는 방법을 제공
+					SLF4J 형식으로 개발하면 이후 로깅 구현체가 변경되어도 별도의 변경이 필요 없다는 장점이 있다. 
+
+
+
+**jQuery**
+	jQuery : javascript를 효율적으로 개발하기 위한 라이브러리 
+	
+ 	javascript window load 와 jquery의 ready 차이점 **
+ 	: window load 는 이미지, 동영상 등의 자원들이 "모두 load 된 후에" 실행되는 이벤트
+ 	  jquery ready는 DOM(Document Object Model)이 load 되면 실행되는 이벤트 
+
+
+
+**MyBatis Framework**
+	영속성 계층 프레임워크(persistence layer framework)
+	DAO를 효율적으로 만들어줌
+	
+	특성 : SQL Mapper
+	JDBC를 효율적으로 개발하고 운영할 수 있는 기능을 제공
+	
+	
+**SpringMVC**
+	Spring Framework 기반 java web application 구현을 위한 기술
+
+	디자인 패턴
+	MVC Design Pattern
+	Model : business logic과 data access logic 
+	View : 클라이언트에게 response 응답하는 역할
+	Controller : 클라이언트의 요청과 응답에 대한 제어자 역할 
+				 클라이언트의 요청을 분석, Model과 연동, 적절한 view를 지정해 응답하게 한다 
+				  
+	Front Controller Design Pattern
+	모든 클라이언트의 요청을 하나의 진입점으로 통합하여 처리하는 디자인 패턴
+	공통정책을 일관성있게 수행할 수 있음(공통정책 : 인증_로그인했는가, 인가_권한있는가, 인코딩, 예외처리, 로깅)
+	
+	springmvc web.xml (deployment descriptor : DD) : 웹 어플리케이션 설정 정보 
+	  <!-- spring19-springmvc-basic/src/main/webapp/WEB-INF/web.xml 보기!! -->
+	   <!-- spring19-springmvc-basic에서 springmvc.jpg 보기!! -->
+  <!--
+		welcome-file의 역할
+		웹 어플리케이션 실행 시 기본으로 요청하는 url 설정
+		http://localhost:8888/springstudy19-springmvc-basic/ 와 같이 웹컨텍스트명으로 요청하면 home.do로 요청되어 
+		클라이언트에게 응답하게 된다.
+	-->
+  <welcome-file-list>
+    <welcome-file>home.do</welcome-file>
+  </welcome-file-list>
+  <!-- 
+  		- SpringMVC에서 제공하는 모든 클라이언트의 요청을 처리하는 Front Controller인 Dispatcher(배당,발송)Servlet이
+  		웹 어플리케이션 시작 시점에 미리 로드 (초기화) 되도록 설정  (load on startup)
+  		
+  		- DispatcherServlet은 스프링 컨테이너인 WebApplicationContext를 생성한다 (IOC, DI, DL, AOP, MVC등을 지원)
+  		자신의 스프링 설정파일을 서블릿이름-servlet.xml로 찾아서 로드한다 
+  		-> 별도의 ServletConfig, ServletContext 설정이 없으면 스프링 설정파일을 찾는 기본 방식임 
+  		예) dispatcher-servlet.xml
+  		
+  		모든 클라이언트 요청의 진입점인 FrontController 역할을 하는  DispatcherServlet은
+  		자신의 spring 설정파일을 [servlet-name]-servlet.xml로 찾아서 로드한다
+  		아래처럼 설정했을 경우 dispatcher-servlet.xml로 찾아서 로드하므로 
+  		spring 설정파일명을 dispatcher-servlet.xml으로 해서 설정정보를 정의하면 된다 
+  		
+  		<load-on-startup>1</load-on-startup> : 서블릿 LifeCycle에서는 첫 클라이언트의 요청시
+  		Servlet 객체 생성 후 init() 실행이 된다. load on startup 설정을 하면 첫 클라이언트 요청이 아니라
+  		웹 어플리케이션 시작시점에 Servlet 객체 생성하고 init 실행되어 "미리 초기화"가 된다. 
+    -->
+  <servlet>
+  	<servlet-name>dispatcher</servlet-name>
+  	<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+  	<load-on-startup>1</load-on-startup>
+  </servlet>
+  <!-- 
+  		.do로 마치는 모든 클라이언트의 요청을 FrontController인 DispatcherServlet이 처리하도록 url pattern을 설정한다. 
+   -->
+  <servlet-mapping>
+  	<servlet-name>dispatcher</servlet-name>
+  	<url-pattern>*.do</url-pattern>
+  </servlet-mapping>
+  
+  ----------------------
+  SpringMVC 기반 Web Application 처음 실행시점 -> web.xml -> spring 설정파일인 [DispatcherServlet name]-servlet.xml이 로드
+  
+  
+  - SpringMVC 주요 구성요소 (지원)
+  
+  DispatcherServlet : FrontController, Spring 설정을 로딩하여 스프링 컨테이너인 WebApplicationContext를 설정
+  
+  HandlerMapping : 요청을 처리할 컨트롤러를 연결 (RequestMappingHandlerMapping이 실행)
+  					담당 컨트롤러를 연걸해주는 역할 (어떤 메서드에 어떤 컨트롤러(컨트롤러로직구현)를 연결시켜야겠다~~)
+ 				
+  HandlerAdaptor : HandlerMapping에서 연결된 컨트롤러를 "실행"시키는 역할
+  					컨트롤러 메서드에서 필요한 매개변수 인자값을 "생성해서 제공"
+  					(RequestMappingHandlerAdapter가 실행)
+  
+  ModelAndView : 컨트롤러 실행 후 DispatcherServlet에게 반환하는 정보이며,
+  				Model과 연동한 결과정보와 View 정보를 할당해서 반환한다
+  				requeset.setAttribute와 똑같은데 여기서는 add attribute...? 제대로 찾아보기
+  				(view name과 request.setAttribute(name,value))
+  				예전에 많이 사용함 . 요즘에는 view name을 리턴하고 model 객체를 받아서 저장하기만하면 핸들러어댑터가 만들어서 전달해줌
+  
+  ViewResolver : 컨트롤러가 반환한 ModelAndView의 view name을 이용해 클라이언트에게 응답하는 방식을 제공
+  					어떤 방식으로 응답할지! 응답방식을 제공해주는 역할  
+  				(InternalResourceViewResolver : prefix -> WEB-INF/views/ , suffix -> .jsp로 설정,
+  					컨트롤러에서 result view name을 반환하면 WEB-INF/views/result.jsp로 응답하게 한다)  
+***
+클라이언트가 브라우저에서 요청 - 그 요청은 프론트 컨트롤러인 모든 요청의 진입점인 디스패쳐서블릿으로 가게된다
+디스패쳐는 핸들러에게 어떤 요청을 실행할지 의뢰하게됨
+한들러 어댑터에 의해서 실행하게 됨 클라이언트가 요청한 것들을 실행할 수 있도록 여러가지 객체, 모델객체 세션객체 등을 컨트롤러에 메서드를 실행시켜준다
+컨트롤러는 서비스나 dao. mapper를 di해서 연동하고 클라이언트에게 응답하기 위한 뷰네임을 반환 .뷰 리저버에 의해서 클라이언트에게 어떤 방식으로 응답할 지에 대해 설정하게하고 
+응답
+***
+
+1. DispatcherServlet은 프론트역할. 모든 요청 집중
+2. HandlerMapping 담당 컨트롤러를 연결시켜줌 (응집도 높이기 위해서 리팩토링 과정을 거쳤음 _역할을 나눠가짐)
+3. HandlerAdaptor가 컨트롤러 실행시켜줌 
+4. 컨트롤러(실제 컨트롤러 로직)
+5. ViewResolver가 응답방식 제공해줌
+
+
+
+---------
+DispatcherServlet이 		
+ 위의 SpringMVC 구성요소(컴포넌트)들은 스프링 프레임워크에서 제공하는 요소들이다. 
+ 
+ ##아래의 요소들은 개발자가 직접 구현해야 하는 요소들이다 (controller, view)
+ Controller : 실제 컨트롤러가 로직을 수행하는 요소
+ 				@Controller : bean으로 스프링 컨테이너에 등록, 관리 
+ 				@RequestMapping : 요청 url을 mapping
+ 				@GetMapping : 요청 url을 mapping시켜주는건데 get 요청방식일 때만 동작함!! 
+ 				@PostMapping : 요청 url을 mapping시켜주는건데 post 요청방식일 때만 동작함!! 
+ 				@ResponseBody : ajax 응답시 사용하는 어노테이션 
+
+
+
+
+	Spring MVC (Legacy) project의 설정파일을 분리 (기존 dispatcher-servlet.xml을 역할별로 분리)
+	/WEB-INF/spring/root-context.xml : 서비스 계층, 영속성 계층에서 사용하는 bean에 대한 설정
+										ServletContext init param과 ServletContextListener를 이용해 로딩
+	
+	/WEB-INF/spring/appServlet/servlet-context.xml : web 관련 컨트롤러 계층에서 사용하는 bean에 대한 설정
+													springmvc annotation, ViewResolver 및 정적 자원 접근에 대한 설정 	
+	
+	Spring MVC (Legacy) project의 xml 설정을 Java Config 기반으로 설정해본다 
+	org.kosta.myproject.config.WebAppConfig : web.xml 역할
+	org.kosta.myproject.config.RootContextConfig : root-context.xml 역할
+	org.kosta.myproject.config.ServletContextConfig : servlet-context.xml 역할
+
+
+
+**JUnit Framework**
+	TDD(TestDrivenDevelopment)를 위한 자바 프레임워크
+	자바 단위 테스트를 위한 프레임워크
+	DI(Dependency Injection)를 이용해 단위테스트가 가능
+
+
+
+**SpringBoot Project**
+스프링 부트는 스프링의 하위 프로젝트 중 하나로써
+"단독으로 빠르게 개발 가능한 스프링 프로젝트"이다 
+프로젝트 차원에서 웹컨테이너를 내장하여
+stand-alone 한 프로젝트를 지원한다 (물론 기존 방식으로 서버에 배포해서 실행 가능하다)
+(stand-alone[스탠드 얼론]이란 다른 어떤 장치의 도움 없이 그 자체만으로 완비된 장치를 말한다_단독으로 실행이가능하다)
+스프링 관련 복잡한 설정을 자동화하고 간편화하여
+효율적으로 개발 할 수 있도록 지원한다
+
+*COC* 
+설정을 넘어 관례(CoC; Convention over Configuration) : 
+관습적이지않은 면(unconventional aspects of the application)만 정의
+즉 자주 사용하는 부분은 관례를 정하여 자동 설정하고 이를 따르지 않을 경우에만 설정
+
+
+- Spring Legacy(springmvc project)					vs 		SpringBoot
+	직접설정(component scan -> IOC,DL)							자동설정
+			springMVC -> DispatcherServlet
+			EncodingFilter 설정
+			mvc annotation driven 설정
+			dbcp 및 mybatis 연동설정
+			Test를 위한 JUnit 설정
+			Security를 위한 설정 등 )		
+			
+	xml + annotation 										propertis(or yaml) + java config + annotation
+	or
+	java config + annotation
+
+	
+	외부 WAS가 필요												WAS가 SpringBoot Project에 내장
+
+
+
+**Template Engine : Thymeleaf**
+	MVC에서 View 역할 담당 Template Engine 기술
+	Java Template Engine : JSP(JSTL), freemaker, mustache, groovy 등이 있다
+	html 상에서 개발, html 파일을 변환해서 분석, 정해진 위치에 데이터를 치환해 웹페이지를 생성하는 방식
+	html 코드를 변경하지 않고 개발하는 방식 (Natural Templates)으로 디자인팀과 개발팀간의 협업이 용이해짐
+	
+	-jsp와 thymeleaf와의 차이점
+	jsp는 자바클래스(서블릿)으로 생성되어 실행되는 방식. 확장자는 .jsp, jsp 상에서 java code 삽입 가능
+	thymeleaf는 html 구조상에서 실행되는 방식. 획장자는 .html, thymeleaf는 java code 삽입 불가
+	
+	- 주요표현식 
+	변수 : ${}
+	링크 url : @{}
+	선택변수 : *{}
+	등
+	자세한 예제는 springbooystudy4-thymeleaf에서 참고하기
+
+**Spring Handler Interceptor**
+	FrontController인 DispatcherServlet이 컨트롤러를 실행하기 전, 후 요청과 응답을 제어하는 역할을 함. 
+	컨트롤러 영역 (persistation layer)의 공통관심사를 처리
+	로그인 인증여부를 체크해 비인증상태의 요청은 해당 컨트롤러를 실행하지 않고 로그인 페이지로 이동 
+	(springbootstudy5-thymeleaf-member-register-interceptor에서 HandlerInterceptorConfigure,LoginCheckInterceptor부분 참고)
+	
+**Lombok**
+	Lombok이란 어노테이션 기반으로 자바코드를 자동으로 생성하는 라이브러리 
+
+
+**Spring AOP Transaction**
+	@Transactional : AOP 기반 선언적 방식의 트랜잭션 처리
+					@Transactional 어노테이션을 적용하면 AOP Proxy(대리인) 객체가 Transaction 제어를 해준다.  
+					 해당 서비스 메서드에서 Error와 RuntimeException(unchecked exception)계열 Exception발생하면 자동 rollback
+					 모든 작업이 문제없이 실행되면 commit
+					 
+	소프트웨어 아키텍쳐 계층(layer)
+	Presentation Layer (Controller) : 어플리케이션의 기능을 웹서비스로 제공
+	Service Layer(Service) : 비즈니스 로직을 캡슐화, 트랜잭션 제어 
+	Persistent Layer (Repository) : 데이터 엑세스 
+
+	DB Transaction 정의 : 비즈니스 로직에서 더 이사 나눌 수 없는 하나의 작업단위(여러 세부 작업을 하나로 묶은 실행단위)
+						  데이터베이스의 상태를 변경하고자 할 때 한 번에 수행되어야하는 연산을 의미
+						  (예 - 계좌이체는 출금과 입금의 세부 작업을 하나의 단위로 처리해야한다. 출금해놓고 입금이 안되면 안됨!! )
+	
+	트랜잭션 성질 ACID - 트랜잭션의 안전성을 보장하기 위한 성질 
+	Atomicity(원자성) : 한 트랜잭션의 세부 연산들이 모두 성공하거나 실패하는 성질
+						이체 작업 중 문제발생시 출금,입금 연산 모두 롤백되어야함
+					
+	Consistency(일관성) : 트랜잭션이 성공하면 일관적인 db 상태를 유지하는 성질
+							무결성 제약이 모든 계좌는 잔고가 있어야한다면 이를 위반하면 트랜잭션은 중단된다 
+	
+	Isolation(격리성) : 트랜잭션으로 처리되는 중간에 외부간섭은 없어야한다. 
+	
+	
+	Durability(영속성) : 성공적으로 완료된 (commit) 트랜잭션은 데이터베이스에 영구보존되어야하는 성질
+ 
+
+**REST(REpresentational State Transfer)**
+REST(REpresentational State Transfer) : 
+분산 환경에서 시스템 간의 통신을 위한 소프트웨어 아키텍쳐 
+
+<<분산 환경에서 다양한 시스템 간의 통신을 위해 자원에 고유한 식별자를 부여하고 
+자원정보를 표준화된 HTTP Method로 제어하는 소프트웨어 아키텍쳐>>  
+
+특징 
+1. 자원정보를 고유한 URI(통합자원식별자:Uniform Resource Identifier)를 부여해 활용 
+HTTP GET(조회) , POST(생성) , PUT(수정), DELELTE(삭제) Method를 통해 제어
+ex) http://news.daum.net/v/100410014		100410014가 식별자!
+
+2. "다양한 클라이언트"에게 서비스를 제공, 클라이언트와 서버 역할의 명확한 분리가 가능.  
+-> 모바일 , 태블릿, PC , TV 등과 같은 다양한 디바이스에 대한 서비스 및  다른 시스템과의 통신을 위해 사용된다 
+
+REST API : 
+REST 기반 서비스 API 
+"어플리케이션 간의 데이터 통신을 위한 어플리케이션 프로그래밍 인터페이스"
+
+RESTful : REST API 제공하는 웹서비스 시스템을 지칭 , "A 서비스 시스템은 'RESTful' 하다"
+
+Spring Rest Annotation
+@RestController : @Controller + @ResponseBody
+
+
+
+**Spring Security**
+
+Secure Coding : 보안성 높은 어플리케이션을 구현하기 위해 보안 요소를 고려해 코딩하는 기법을 의미 
+                   (SW의 보안 취약점을 배제하기 위한 코딩 )
+
+Spring Security : 자바 애플리케이션의 보안 기능을 위한 Spring 하위 프레임워크  
+					 FilterChainProxy가 내부적으로 동작되어 인증,인가 및 기타 보안 작업을 수행한다  
+					 AOP 적용  -> Security , Transaction , Logging 등 
+
+기본적인 보안 기능으로 인증 및 인가와 
+강화된 보안 기능으로는 비밀번호 암호화, csrf 해킹방지, 세션관리기능 등을 지원한다 
+
+
+1) 인증(authentication) : 현재 사용자가 누군지 확인 (일반적으로 로그인)
+코드상에서는 authentication은 인증 과정에 사용되는 핵심 객체(로그인 인증 정보 객체)이다 
+로그인 시점에 기존 세션 사용하지 않고 새로 세션 아이디를 발급해준다 
+
+2) 인가 (authorization) : 현재 사용자가 특정 기능을 사용할 권한이 있는지 검사
+
+3) 비밀번호 암호화 : 보안 운영체제의  대표적인 OpenBSD에서 사용하는 암호 인증 메커니즘인
+ 단방향 암호화 해싱함수의 bcrypt 암호화 기법을 이용 
+ 
+4) CSRF(Cross-Site Request Forgery:사이트간 요청 위조 공격 ) 방지
+csrf 방지를 위한 csrf 토큰을 이용 
+
+CSRF(Cross-Site Request Forgery:사이트간 요청 위조 공격 ) 해킹이란 
+사용자 의지와 무관하게 공격자가 의도한 행위를 특정웹사이트에 요청하게 하는 공격을 말한다   
+사용자가 로그인한 상태에서 사이트간 요청 위조 공격 코드가 삽입된  페이지를 동일한 브라우저의 다른 탭에서 
+열면 공격 대상이 되는 웹사이트는 위조된 공격 명령이 믿을 수 있는 사용자로부터 발송된 것으로 판단되어 공격에 노출된다
+대응방안: csrf token을 이용 
+http post /put / delete 방식( insert, delete , update : 서버의 정보를 변경하는 요청 )의 요청일 경우 
+해당 서버에서 발행한 csrf 토큰을 발급받아 요청시 발급받은 csrf 토큰이 있는 경우에만 실행하게 한다 
+
+					
+**Spring Security 개발단계 **
+1. New Spring Starter Project Dependencies
+Spring Boot DevTools
+MyBatis Framework
+Thymeleaf
+Spring Web 
+Oracle Driver
+lombok
+Spring Security
+를 선택해서 프로젝트를 만든다 
+
+추가로 thymeleaf layout을 위해 pom.xml 에 아래를 추가한다 
+<dependency>			
+<groupId>nz.net.ultraq.thymeleaf</groupId>
+<artifactId>thymeleaf-layout-dialect</artifactId>
+</dependency>
+
+2. SQL DDL 정의 ( 회원member , 권한authorities 테이블 ) 
+src/test/java/security.sql 
+
+3. 스프링 시큐리티 설정  
+   org.kosta.myproject.config.security.WebSecurityConfig
+
+4. org.kosta.myproject.config.security.MemberAuthenticationProvider 구현 ( 인증 로직을 정의한 클래스 ) -> 로그인 시점에 실행
+    CustomAuthenticationEntryPoint -> ajax 요청에 대한 인증/인가 처리를 위한 클래스 
+
+5. Controller(@Secured("ROLE_ADMIN") 인가처리) , Service(비밀번호 암호화처리) , Mapper(인증 및 인가 정보 조회) 정의 
+
+6. View 
+   1) spring security custom tag 를 이용한 인증 및 인가(권한) 상태에 따른 view 제공 
+      test-auth.html, left.html, admin/main.html => 이 html 에서 thymeleaf 를 spring security 상에서 사용하는 view logic을 확인해 적용한다 
+      spring security 관련 thymeleaf tag 를 사용하기 위한 선언 및 tag 사용 예를 확인한다 
+     
+      선언부의 예 
+     <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+      
+      spring security 관련 thymeleaf tag 예 : left.html , auth/test-auth.html 에 자세한 코드와 설명이 있음 
+      <th:block sec:authorize="isAuthenticated()">로그인한 사람이 볼 수 있는 영역</th:block>
+      <span sec:authorize="isAuthenticated()">로그인한 사람이 볼 수 있는 요소<br><br></span>
+      <span sec:authorize="isAuthenticated()==false">로그인하지 않은 사람이 볼 수 있는 요소<br><br></span>
+      <span sec:authorize="hasRole('ROLE_ADMIN') and hasRole('ROLE_MEMBER') ">ROLE_ADMIN 이자 ROLE_MEMBER 권한을 가진 회원이 볼수 있음</span>
+   
+   2) csrf 해킹 방지를 위한 csrf token 적용  
+       http post 요청일때  csrf token 적용
+       eft.html(로그인,로그아웃) 와 member 디렉토리 이하 
+       ajax-cafe, register,update form html 에서 spring security csrf 해킹 방지를 위한 토큰 전송 여부를 확인한다 
+
+       
+       
+       
+       
+       
+       
+**클라우드 , AWS , AWS EC2 개념**
+클라우드 컴퓨팅
+인터넷을 통해 컴퓨터 시스템 자원을 필요할 때 바로 지원
+
+클라우드 컴퓨팅의 형태(Model) : IaaS , PaaS, SaaS​
+
+IaaS(Infrastructure as a Service) :  이애스
+서버, 네트워크 등의  인프라 자원을 필요에 따라 사용할 수 있게 서비스를 제공하는 형태
+시스템관리자: AWS  EC2,  GCP 등
+
+PaaS(Platform as a Service) : 패스  
+애플리케이션을 개발,실행,관리할 수 있는 플랫폼을 제공,
+개발을 위한 플랫폼 구축 필요없이 웹에서 빌려쓸수 있게 하는 모델
+개발자 : AWS의 SageMaker, Google Colab 등
+
+SaaS(Software as a Service) : 쌔스 
+소프트웨어 및 관련 데이터를 클라우드에서 지원, 웹브라우저 등의 클라이언트를 통해 접속하여 사용하는 서비스 모델
+엔드유저 : Gmail, Goggle Docs 등
+
+AWS(Amazon Web Services)
+2006년 아마존닷컴에서 개발한 클라우드 컴퓨팅 플랫폼 서비스
+물리적 데이터 센터와 서버를 구입, 소유 및 유지 관리하는 대신
+AWS(클라우드 공급자 ) 로부터 서비스를 제공받을 수 있음  
+
+AWS EC2 (Amazon Elastic Compute Cloud)
+AWS 클라우드 상에서 가상 서버를 구축하고 보안 및 네트워킹을 구성
+하드웨어에 선투자할 필요가 없이 더 빠르게 애플리케이션을 개발하고 배포할 수 있음    
+
+
+
+**ORM, JPA, Hibernate**
+-ORM : Object Relational Mapping    
+ 어플리케이션 객체와 데이터베이스의 데이터를 자동 매핑 
+ORM은 별도 SQL 작성하지 않고 Object를 조작하여 db를 제어한다(내부적으로  sql이 자동 생성되어 실행 ) 
+DBMS 에 대한 종속성을 줄일 수 있다 
+ 
+- 영속성 계층 프레임워크(Persistence Layer Framework) : 
+   MyBatis는 SQL Mapper Framework ,  JPA(Hibernate)는 ORM Framework 이다 
+
+-JPA (Java Persistence API) 
+자바 진영 ORM 기술 표준 명세 -> 자바 어플리케이션에서 ORM 기반으로 DB를 연동하는 방식을 정의한 인터페이스(명세)
+
+-Hibernate : JPA의 대표적인 ORM 구현체 ( Library ) 
+JPA=> Interface , Hibernate => Implementation ( Spring Boot 에서 기본 JPA 구현체로 Hibernate를 제공함 )  
+   
+       
+**MSA / Netflix OSS / Spring Cloud **
+ 
+MSA : MicroService Architecture , 서비스 단위로 분리해 개발하고 운영, 각각 자체의 서버(프로세스)에서 배포 실행하고 
+        이들의 모음으로 단일 애플리케이션을 설계하는 방식 
+        
+-MicroService Architecture란?   
+ 독립적으로 개발 , 배포할 수 있는 서비스의 모음으로 애플리케이션을 설계하는 방식 
+ 각각 자체 프로세스에서 실행 , 경량 메커니즘( REST/JSON  )으로 통신하는 느슨한 결합의 서비스 모음으로 단일 애플리케이션을 개발
+  
+ 장점 
+ MSA 는 상호 독립적으로 구축될 수 있어 결합도가 낮음 
+ 특정 서비스에만 집중, 해당 서비스에 가장 적합한 환경과 기술을 선택할 수 있음 
+ 변경 및 이슈 사항이 있는 마이크로 서비스만 빠르게 수정,배포할 수 있음 
+ 
+Netflix OSS :  MSA 구축을 위한 Netfilx 사의 Open Source Software  
+                   Hystrix(Circuit Breaker) , Ribbon(Load Balancer), Zuul(API Gateway), Eureka(Service Discovery) 등이 있음 
+                   
+Spring Cloud :  Spring Boot + Netflix OSS ( Spring boot를 기반으로 MSA 구축에 특화된 라이브러리들의 집합 ) 
+                  MSA 를 위한 스프링 프로젝트 
+                  독립적인 프로젝트들로 구성된 상위 프로젝트 ( Spring Cloud is an umbrella project consisting of independent projects ) 
+                  
+**java lambda**    		    			   
+ 람다(lambda) : 익명 함수(Anonymous functions)를 지칭하는 용어		   
+ 람다 표현식(lambda expression) : 메소드를 하나의 식으로 표현한 것. 람다식을 사용하면 함수를 단순하게 표현할 수 있다.
+  	(매개변수목록) -> { 함수몸체 } 
+ why? 
+       -개발 생산성 - 간결한 표현이 가능 
+       -파라미터에 행위를 전달할 수 있다 ( 메서드 매개변수로 행동방식을 전달할 수 있다 ) 
+       		->런타임(실행시점)에 행위를 전달 받아서 제어 흐름을 수행할 수 있다.
+       -메서드의 추상화가 가능하다 
+       		->알고리즘 자체의 변경을 동적으로 함수 형태로 할당 받아 적용할 수 있다. 
+	- jdk 1.8 이상 지원 		 
+
+ 
+람다식 문법(syntax)  
+		    람다식(익명함수) : 인터페이스 명과 구현할 추상 메서드 선언부 생락됨 
+		    () : 추상메서드의 매개변수리스트 영역 
+		    -> : 람다식 시작 토큰 
+		    {} : 구현부 ( 추상 메서드를 오버라이딩하는 영역 )  , 위의 () 에 명시하는 매개변수를
+		        사용할 수 있다 
+	 (매개변수목록) -> { 함수몸체 }
+	 
+	ex) 기존 방식 1, 2     람다식 3 을 비교해본다 
+	    // 방식 1 
+		for(int i=0;i<list.size();i++) 
+			System.out.println(list.get(i));
+		System.out.println("***********");
+		
+		
+		// 방식 2
+		for(String s:list)
+			System.out.println(s);
+		System.out.println("***********");
+		
+	
+		// 방식 3 : 람다식 표현 jdk 1.8 이상 
+		list.forEach((x)->System.out.println(x)); 	        
+ 	
+java.util.stream.Stream : 
+		 다양한 데이터 소스(list,map,set, File)를 표준화된 방법으로 다루기 위한 라이브러리
+		 Iterator와 유사하지만, 람다식으로 컬렉션의 요소를 처리할 수 있고
+		 데이터 처리에 관한 다양한 메서드를 제공한다  
+		 Stream은 람다식으로 데이터 요소들을 처리할 수 있는 반복자의 역할을 한다  
+		예) 
+		list.stream().filter(product->product.getMaker().equals("삼성")&&product.getPrice()>50).forEach(p->System.out.println(p));		           
+       

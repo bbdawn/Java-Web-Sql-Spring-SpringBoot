@@ -1,0 +1,40 @@
+ **java lambda**    		    			   
+ 람다(lambda) : 익명 함수(Anonymous functions)를 지칭하는 용어		   
+ 람다 표현식(lambda expression) : 메소드를 하나의 식으로 표현한 것. 람다식을 사용하면 함수를 단순하게 표현할 수 있다.
+  	(매개변수목록) -> { 함수몸체 } 
+ why? 
+       -개발 생산성 - 간결한 표현이 가능 
+       -파라미터에 행위를 전달할 수 있다 ( 메서드 매개변수로 행동방식을 전달할 수 있다 ) 
+       		->런타임(실행시점)에 행위를 전달 받아서 제어 흐름을 수행할 수 있다.
+       -메서드의 추상화가 가능하다 
+       		->알고리즘 자체의 변경을 동적으로 함수 형태로 할당 받아 적용할 수 있다. 
+	- jdk 1.8 이상 지원 		 
+
+ 
+람다식 문법(syntax)  
+		    람다식(익명함수) : 인터페이스 명과 구현할 추상 메서드 선언부 생락됨 
+		    () : 추상메서드의 매개변수리스트 영역 
+		    -> : 람다식 시작 토큰 
+		    {} : 구현부 ( 추상 메서드를 오버라이딩하는 영역 )  , 위의 () 에 명시하는 매개변수를
+		        사용할 수 있다 
+	 (매개변수목록) -> { 함수몸체 }
+	 
+	ex) 기존 방식 1, 2     람다식 3 을 비교해본다 
+	    // 방식 1 
+		for(int i=0;i<list.size();i++) 
+			System.out.println(list.get(i));
+		System.out.println("***********");
+		// 방식 2
+		for(String s:list)
+			System.out.println(s);
+		System.out.println("***********");
+		// 방식 3 : 람다식 표현 jdk 1.8 이상 
+		list.forEach((x)->System.out.println(x)); 	        
+ 	
+java.util.stream.Stream : 
+		 다양한 데이터 소스(list,map,set, File)를 표준화된 방법으로 다루기 위한 라이브러리
+		 Iterator와 유사하지만, 람다식으로 컬렉션의 요소를 처리할 수 있고
+		 데이터 처리에 관한 다양한 메서드를 제공한다  
+		 Stream은 람다식으로 데이터 요소들을 처리할 수 있는 반복자의 역할을 한다  
+		예) 
+		list.stream().filter(product->product.getMaker().equals("삼성")&&product.getPrice()>50).forEach(p->System.out.println(p));		    

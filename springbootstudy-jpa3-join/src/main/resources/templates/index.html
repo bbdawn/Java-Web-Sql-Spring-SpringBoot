@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>SpringBoot ORM JPA</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+<h4>JPA , REST  - @ManyToOne 사원 ->|0---| 부서   join 및 ModelMapper 활용( DTO -- Entity 변환 )</h4>
+   <ul> 
+   	<li>
+   	HTTP Request Method <br><br>
+   	GET : 리스트 조회 <input type="button" value="testGetListBtn" id="testGetListBtn"><br>
+   	<div id="listView"></div> 	<br> <br>
+   	GET : 조회 <input type="button" value="testGetBtn" id="testGetBtn"><input type="text" id="pid"><br><br> 
+   </ul>
+<script type="text/javascript">
+	$(document).ready(function(){
+		//ajaxSetup():  실행될  AJAX 요청에 대한 기본 속성을 정의해 재사용 
+		$.ajaxSetup({
+			success:function(result){					
+				alert(result);
+			},
+			error: function (jqXHR) {
+                alert("jqXHR status code:"+jqXHR.status+" message:"+jqXHR.responseText);
+            }
+		});//ajaxSetup
+		$("#testGetListBtn").click(function(){	
+			$.ajax({
+				type:"get",
+				url:"employee",				
+				success:function(employeeList){	
+					$("#listView").empty();
+					$.each(employeeList,function(i,employee){
+						$("#listView").append(employee.id+" "+employee.ename+" "+employee.department.departmentId+" "+employee.department.dname+" "+employee.department.location+"<br>").css("background","pink");
+					});					
+				}
+			});//ajax
+		});//click
+		$("#testGetBtn").click(function(){	
+			$.ajax({
+				type:"get",
+				url:"employee/"+$("#pid").val(),				
+				success:function(employee){					
+					alert(employee.id+" "+employee.ename+" "+employee.department.departmentId+" "+employee.department.dname+" "+employee.department.location);
+				}
+			});//ajax
+		});//click			
+	});//ready
+</script>
+   <img src="images/jpa.png" width="700" >
+</body>
+</html>

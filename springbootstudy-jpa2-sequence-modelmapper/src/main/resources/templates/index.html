@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>SpringBoot ORM JPA</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+<!--	
+**ORM JPA**
+ORM( Object Relational Mapping ) 
+
+Object  - ORM -  RDBMS 
+객체외 데이터베이스의 연결 역할 
+ORM은 애플리케이션과 JDBC 사이에서 동작하고 
+내부적으로 JPA(Hibernate)가 JDBC API를 사용하여 SQL을 실행하여 DB와 통신 
+
+참고) 영속성 계층 프레임워크 : MyBatis는 SQL Mapper Framework 이고
+ JPA(Hibernate)는 ORM Framework 이다 
+
+ORM은 별도 SQL 작성하지 않고 Object를 조작하여 db를 제어한다 
+( 자동으로 sql  생성 ) 
+DBMS 에 대한 종속성을 줄일 수 있다 
+
+JPA (Java Persistence API) 
+자바 진영 ORM 기술 표준 명세 -> 자바 어플리케이션에서 DB를 연동하는 방식을 정의한 인터페이스(명세)
+
+Hibernate는 JPA의 대표적인 ORM 구현체 ( Library ) 
+JPA(Interface) , Hibernate(Implementation) 
+ -->
+<h4>JPA 적용 REST 웹어플리케이션 구현 예제(@SequenceGenerator를 이용한 Oracle Sequence , PageRequest와 Page를 이용한 페이징) </h4>
+   <ul> 
+   	<li>
+   	HTTP Request Method <br><br>
+   	GET : 리스트 조회 <input type="button" value="testGetListBtn" id="testGetListBtn"><br>
+   	<div id="listView"></div> 	<br> <br>
+   	GET : 조회 <input type="button" value="testGetBtn" id="testGetBtn"><input type="text" id="pid"><br><br> 
+	POST :생성 <input type="button" value="testCreateBtn" id="testCreateBtn"><br>
+	<form id="createProductForm">
+		상품명 <input type="text" name="name" size="5"> 제조사 <input type="text" name="maker" size="5"> 가격 <input type="number" name="price">
+	</form>
+	<br><br>
+	PUT : 수정 <input type="button" value="testPutBtn" id="testPutBtn"><br>
+		<form id="updateProductForm">
+		상품번호 <input type="text" name="id" size="3" id="updateId"> 
+		상품명 <input type="text" name="name" size="5"> 제조사 <input type="text" name="maker" size="5"> 가격 <input type="number" name="price">
+	</form>
+	<br>
+	DELETE : 삭제 <input type="button" value="testDeleteBtn" id="testDeleteBtn">
+	<input type="text" id="deleteId">
+	<br><br>
+	Page 당 상품정보 확인 
+	<a href="#" class="testPageLink">1</a>
+	<a href="#" class="testPageLink">2</a>
+	<a href="#" class="testPageLink">3</a>
+   	<div id="productListByPage"></div>
+   	</li>  
+   </ul>
+<script type="text/javascript">
+	$(document).ready(function(){
+		//ajaxSetup():  실행될  AJAX 요청에 대한 기본 속성을 정의해 재사용 
+		$.ajaxSetup({
+			success:function(result){					
+				alert(result);
+			},
+			error: function (jqXHR) {
+                alert("jqXHR status code:"+jqXHR.status+" message:"+jqXHR.responseText);
+            }
+		});//ajaxSetup
+		$("#testGetListBtn").click(function(){	
+			$.ajax({
+				type:"get",
+				url:"products",				
+				success:function(productList){	
+					$("#listView").empty();
+					$.each(productList,function(i,product){
+						$("#listView").append(product.id+" "+product.name+" "+product.maker+" "+product.price+"<br>").css("background","pink");
+					});					
+				}
+			});//ajax
+		});//click
+		$("#testGetBtn").click(function(){	
+			$.ajax({
+				type:"get",
+				url:"products/"+$("#pid").val(),				
+				success:function(product){					
+					alert(product.id+" "+product.name+" "+product.maker+" "+product.price);
+				}
+			});//ajax
+		});//click	
+		$("#testCreateBtn").click(function(){			
+			if($("#createProductForm :input[name=name]").val()==""){
+				alert("상품명을 입력하세요");
+				return;
+			}
+			$.ajax({
+				type:"post",
+				url:"products",
+				data:$("#createProductForm").serialize()
+			}).done(function(){ // done - success 와 동일
+				$("#createProductForm")[0].reset();
+				// 등록 후 업데이트된 리스트를 보기 위해 trigger 로 이벤트를 발생시킨다  
+				$("#testGetListBtn").trigger("click");
+			});//ajax
+		});//click	
+		$("#testPutBtn").click(function(){			
+			$.ajax({
+				type:"put",
+				url:"products?"+$("#updateProductForm").serialize()
+			}).always(function(){ // always 요청에 대한 처리가 success or fail 상관없이 항상 실행 
+				$("#updateProductForm")[0].reset();
+				// 등록 후 업데이트된 리스트를 보기 위해 trigger 로 이벤트를 발생시킨다  
+				$("#testGetListBtn").trigger("click");
+			});
+		});//click	
+		
+		$("#testDeleteBtn").click(function(){			
+			$.ajax({
+				type:"delete",
+				url:"products/"+$("#deleteId").val()
+			}).always(function(){ // always 요청에 대한 처리가 success or fail 상관없이 항상 실행 
+				$("#deleteId").val("");
+				// 등록 후 업데이트된 리스트를 보기 위해 trigger 로 이벤트를 발생시킨다  
+				$("#testGetListBtn").trigger("click");
+			});
+		});//click	
+		// page 별 상품리스트를 조회
+		// src/test/java 의 unitTest 마지막 부분에서 상품데이터를 저장한 후 테스트해본다
+		$(".testPageLink").click(function(){	
+			let page=$(this).text();			
+			$.ajax({
+				type:"get",
+				url:"products/page/"+page,			
+				success:function(productList){	
+					$("#productListByPage").empty();
+					$.each(productList,function(i,product){
+						$("#productListByPage").append(product.id+" "+product.name+" "+product.maker+" "+product.price+"<br>").css("background","pink");
+					});					
+				}
+			});//ajax
+		});//click
+	});//ready
+</script>
+   <img th:src="@{/images/jpa.png}" width="700">
+</body>
+</html>

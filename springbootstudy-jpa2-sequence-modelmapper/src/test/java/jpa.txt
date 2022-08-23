@@ -1,0 +1,52 @@
+**ORM, JPA, Hibernate**
+-ORM : Object Relational Mapping    
+ 어플리케이션 객체와 데이터베이스의 데이터를 자동 매핑 
+ SQL이 아닌 객체의 메서드로 데이터를 제어 ( SQL 은 내부적으로 자동 생성되어 실행 ) 
+ Object  - ORM -  RDBMS  
+ 
+- 영속성 계층 프레임워크(Persistence Layer Framework) : 
+   MyBatis는 SQL Mapper Framework ,  JPA(Hibernate)는 ORM Framework 이다 
+
+-JPA (Java Persistence API) 
+자바 진영 ORM 기술 표준 명세 -> 자바 어플리케이션에서 ORM 기반으로 DB를 연동하는 방식을 정의한 인터페이스(명세)
+과거 EJB 3.0에서 기존 EntityBean 을 대체한 ORM 기술 표준으로 등장
+
+-Hibernate : JPA의 대표적인 ORM 구현체 ( Library ) 
+JPA=> Interface , Hibernate => Implementation ( Spring Boot 에서 기본 JPA 구현체로 Hibernate를 제공함 )  
+
+참조 문서 
+https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#reference
+https://docs.spring.io/spring-data/jpa/docs/current/api/org/springframework/data/jpa/repository/JpaRepository.html
+ 
+0. maven pom.xml 
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-data-jpa</artifactId>
+</dependency>
+
+1. application.properties 에 mvc,dbcp,devtools,jpa 설정 
+
+2. table 생성 
+
+3.	src/main/java  org.kosta.myapp.model.entity.Member  Entity class를 정의 
+ @Entity,@Table(name="MEMBER"),@Id,@Column,@Column(name = "PASSWORD")
+
+4. src/main/java org.kosta.myapp.model.repository.MemberRepository interface 생성
+
+	 이 인터페이스는 아래 인터페이스를 상속받아야 한다  
+								entity   pk type 
+	 extends JpaRepository<Member, String> 
+	 
+	 별도의 코드 작업 없이 CRUD 가 가능하다 
+	 ( findAll() , getOne() ,delete() , save() ,count() 등을 지원 ) 
+	 
+5. src/test/main  jUnit Test에서 기본으로 제공하는 jpa CRUD 메서드 Test 
+   
+
+
+--- rest로 test 해본다 
+
+6. controller 
+7. view 
+
+	 

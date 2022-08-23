@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>REST</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<style type="text/css">
+.restImg {
+	width: 800px;
+	height: 400px
+}
+</style>
+</head>
+<body>
+	<!--
+**ORM JPA**
+ORM( Object Relational Mapping ) 
+
+Object  - ORM -  RDBMS 
+객체외 데이터베이스의 연결 역할 
+ORM은 애플리케이션과 JDBC 사이에서 동작하고 
+내부적으로 JPA(Hibernate)가 JDBC API를 사용하여 SQL을 실행하여 DB와 통신 
+
+참고) 영속성 계층 프레임워크 : MyBatis는 SQL Mapper Framework 이고
+ JPA(Hibernate)는 ORM Framework 이다 
+
+ORM은 별도 SQL 작성하지 않고 Object를 조작하여 db를 제어한다 
+( 자동으로 sql  생성 ) 
+DBMS 에 대한 종속성을 줄일 수 있다 
+
+JPA (Java Persistence API) 
+자바 진영 ORM 기술 표준 명세 -> 자바 어플리케이션에서 DB를 연동하는 방식을 정의한 인터페이스(명세)
+
+Hibernate는 JPA의 대표적인 ORM 구현체 ( Library ) 
+JPA(Interface) , Hibernate(Implementation) 
+ -->
+	<h3>JPA 적용 REST 웹어플리케이션 구현 예제</h3>
+	<ul>
+		<li>회원 리스트 조회 <input type="button" value="testGetListBtn"
+			id="testGetListBtn"><br>
+			<div id="listView"></div> <br> <br> 아이디로 조회 <input
+			type="button" value="testGetBtn" id="testGetBtn"><input
+			type="text" id="mid"><br>
+		<br> POST :생성 <input type="button" value="testCreateBtn"
+			id="testCreateBtn"><br>
+			<form id="creatememberForm">
+				아이디<input type="text" name="id" size="5"> 비밀번호 <input
+					type="text" name="password" size="5"> 이름 <input type="text"
+					name="name"> 주소 <input type="text" name="address">
+			</form> <br>
+		<br> PUT : 수정 <input type="button" value="testPutBtn"
+			id="testPutBtn"><br>
+			<form id="updatememberForm">
+				아이디<input type="text" name="id" size="5"> 비밀번호 <input
+					type="text" name="password" size="5"> 이름 <input type="text"
+					name="name"> 주소 <input type="text" name="address">
+			</form> <br> DELETE : 삭제 <input type="button" value="testDeleteBtn"
+			id="testDeleteBtn"> <input type="text" id="deleteId">
+		</li>
+	</ul>
+	<img src="images/jpa.png" width="700">
+	<script type="text/javascript">
+		$(document).ready(
+				function() {
+					$.ajaxSetup({
+						success : function(result) {
+							alert(result);
+						},
+						error : function(jqXHR) {
+							alert("status code:" + jqXHR.status + " message:"
+									+ jqXHR.responseText);
+						}
+					});//ajaxSetup
+					$("#testGetListBtn").click(
+							function() {
+								$.ajax({
+									type : "get",
+									url : "members",
+									success : function(memberList) {
+										$("#listView").empty();
+										$.each(memberList, function(i, member) {
+											$("#listView").append(
+													member.id + " "
+															+ member.name + " "
+															+ member.address
+															+ "<br>").css(
+													"background", "pink");
+										});
+									}
+								});//ajax
+							});//click
+					$("#testGetBtn").click(
+							function() {
+								$.ajax({
+									type : "get",
+									url : "members/" + $("#mid").val(),
+									success : function(member) {
+										alert(member.id + " " + member.name
+												+ " " + member.address);
+										$("#mid").val("");
+									}
+								});//ajax
+							});//click	
+					$("#testCreateBtn").click(function() {
+						$.ajax({
+							type : "post",
+							url : "members",
+							data : $("#creatememberForm").serialize()
+						}).done(function() { // done - success 와 동일
+							$("#creatememberForm")[0].reset();
+							// 등록 후 업데이트된 리스트를 보기 위해 trigger 로 이벤트를 발생시킨다  
+							$("#testGetListBtn").trigger("click");
+						});//ajax
+					});//click	
+					$("#testPutBtn").click(
+							function() {
+								$.ajax(
+										{
+											type : "put",
+											url : "members?"
+													+ $("#updatememberForm")
+															.serialize()
+										}).always(function() { // always는 요청에 대한 처리가 success or fail 상관없이 항상 실행 
+									$("#updatememberForm")[0].reset();
+									// 등록 후 업데이트된 리스트를 보기 위해 trigger 로 이벤트를 발생시킨다  
+									$("#testGetListBtn").trigger("click");
+								});
+							});//click	
+
+					$("#testDeleteBtn").click(function() {
+						$.ajax({
+							type : "delete",
+							url : "members/" + $("#deleteId").val()
+						}).always(function() { // always 요청에 대한 처리가 success or fail 상관없이 항상 실행 
+							$("#deleteId").val("");
+							// 등록 후 업데이트된 리스트를 보기 위해 trigger 로 이벤트를 발생시킨다  
+							$("#testGetListBtn").trigger("click");
+						});
+					});//click		
+				});//ready
+	</script>
+</body>
+</html>
